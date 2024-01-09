@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace AnotherWorldProject.GridSystem
@@ -8,16 +9,20 @@ namespace AnotherWorldProject.GridSystem
     {
         int width, height;
         float cellSize;
+        Dictionary<GridPosition, GridObject> grid;
         public GridSystem(int width, int height, float cellSize)
         {
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
-            for(int x = 0; x < width; x++)
+            this.grid = new Dictionary<GridPosition, GridObject>();
+            for (int x = 0; x < width; x++)
             {
                 for(int z = 0; z< height; z++)
                 {
-                    Debug.DrawLine(GetWorldPosition(x,z), GetWorldPosition(x,z) + Vector3.right * .2f, Color.white, 1000000);
+                    GridPosition gridPosition = new GridPosition(x, z);
+                    GridObject newObject = new GridObject(this, gridPosition);
+                    grid.Add(gridPosition, newObject);
                 }
             }
         }
@@ -29,6 +34,18 @@ namespace AnotherWorldProject.GridSystem
         {
             return new GridPosition(Mathf.RoundToInt(worldPosition.x / cellSize),
                  Mathf.RoundToInt(worldPosition.z / cellSize));
+        }
+
+        public void CreateDebugObject(Transform debugPrefab)
+        {
+            for(int x = 0; x < width;x++)
+            {
+                for(int z = 0; z< height; z++)
+                {
+                    Transform debugobject = GameObject.Instantiate(debugPrefab, GetWorldPosition(x, z), Quaternion.identity);
+                    
+                }
+            }
         }
     }
 
