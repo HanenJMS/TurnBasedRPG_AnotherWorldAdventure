@@ -20,13 +20,11 @@ namespace AnotherWorldProject.UnitSystem
         private void Update()
         {
             unitAnimator.SetBool("isRunning", Vector3.Distance(targetPosition, this.transform.position) > agent.stoppingDistance);
-            if (Input.GetMouseButtonDown(0))
-            {
-                Move(MouseWorld.GetMousePosition());
+
                 agent.speed = 2.957f;
-            }
+            
         }
-        private void Move(Vector3 targetPosition)
+        public void Move(Vector3 targetPosition)
         {
             this.targetPosition = targetPosition;
             this.transform.LookAt(targetPosition);

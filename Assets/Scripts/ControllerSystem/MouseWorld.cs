@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AnotherWorldProject.ControllerSystem
@@ -12,7 +10,7 @@ namespace AnotherWorldProject.ControllerSystem
         [SerializeField] LayerMask mousePlaneLayer;
         private void Awake()
         {
-            if(instance != null)
+            if (instance != null)
             {
                 Destroy(this);
             }
@@ -20,7 +18,7 @@ namespace AnotherWorldProject.ControllerSystem
         }
         private void Start()
         {
-             mainCameraReference = Camera.main;
+            mainCameraReference = Camera.main;
         }
         // Update is called once per frame
         void Update()
@@ -30,8 +28,14 @@ namespace AnotherWorldProject.ControllerSystem
         public static Vector3 GetMousePosition()
         {
             Ray ray = mainCameraReference.ScreenPointToRay(Input.mousePosition);
-            Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, instance.mousePlaneLayer);
-            return raycastHit.point;
+            RaycastHit hit = GetRaycastHit(instance.mousePlaneLayer);
+            return hit.point;
+        }
+        public static RaycastHit GetRaycastHit(LayerMask layerMask)
+        {
+            Ray ray = mainCameraReference.ScreenPointToRay(Input.mousePosition);
+            Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask);
+            return raycastHit;
         }
     }
 }
