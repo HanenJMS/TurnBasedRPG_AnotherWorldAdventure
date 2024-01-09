@@ -6,7 +6,18 @@ namespace AnotherWorldProject.ControllerSystem
 {
     public class MouseWorld : MonoBehaviour
     {
-        Camera mainCameraReference;
+        private static MouseWorld instance;
+
+        static Camera mainCameraReference;
+        [SerializeField] LayerMask mousePlaneLayer;
+        private void Awake()
+        {
+            if(instance != null)
+            {
+                Destroy(this);
+            }
+            instance = this;
+        }
         private void Start()
         {
              mainCameraReference = Camera.main;
@@ -14,9 +25,13 @@ namespace AnotherWorldProject.ControllerSystem
         // Update is called once per frame
         void Update()
         {
+            transform.position = GetMousePosition();
+        }
+        public static Vector3 GetMousePosition()
+        {
             Ray ray = mainCameraReference.ScreenPointToRay(Input.mousePosition);
-            Debug.Log(Physics.Raycast(ray, out RaycastHit raycastHit));
-            transform.position = raycastHit.point;
+            Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, instance.mousePlaneLayer);
+            return raycastHit.point;
         }
     }
 }

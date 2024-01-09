@@ -1,22 +1,29 @@
+using AnotherWorldProject.ControllerSystem;
 using UnityEngine;
+using UnityEngine.AI;
 namespace AnotherWorldProject.UnitSystem
 {
     public class Unit : MonoBehaviour
     {
         Vector3 targetPosition;
+        NavMeshAgent agent;
         float minDistance = 1f;
+        private void Awake()
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
         private void Update()
         {
-            if (Vector3.Distance(transform.position, targetPosition) > minDistance)
+
+            if(Input.GetMouseButtonDown(0))
             {
-                Vector3 moveDirection = (targetPosition - transform.position).normalized;
-                float moveSpeed = 4f;
-                transform.position += moveDirection * moveSpeed * Time.deltaTime;
+                Move(MouseWorld.GetMousePosition());
             }
         }
         private void Move(Vector3 targetPosition)
         {
             this.targetPosition = targetPosition;
+            agent.SetDestination(targetPosition);
         }
     }
 }
