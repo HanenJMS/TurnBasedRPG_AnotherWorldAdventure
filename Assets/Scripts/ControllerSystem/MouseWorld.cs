@@ -4,7 +4,7 @@ namespace AnotherWorldProject.ControllerSystem
 {
     public class MouseWorld : MonoBehaviour
     {
-        private static MouseWorld instance;
+        private static MouseWorld instance { get; set; }
 
         static Camera mainCameraReference;
         [SerializeField] LayerMask mousePlaneLayer;
@@ -13,6 +13,7 @@ namespace AnotherWorldProject.ControllerSystem
             if (instance != null)
             {
                 Destroy(this);
+                return;
             }
             instance = this;
         }
