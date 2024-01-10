@@ -1,3 +1,4 @@
+using AnotherWorldProject.GridSystem;
 using AnotherWorldProject.UnitSystem;
 using System;
 using UnityEngine;
@@ -27,7 +28,12 @@ namespace AnotherWorldProject.ControllerSystem
             if (Input.GetMouseButtonDown(0))
             {
                 if (TryHandleUnitSelection()) return;
-                selectedUnit.Move(MouseWorld.GetMousePosition());
+
+                GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
+                if(LevelGridSystem.Instance.IsValidGridPosition(mousePosition))
+                {
+                    selectedUnit.GetMoveAction().Move(mousePosition);
+                }
             }
         }
         public Unit GetSelectedUnit()
@@ -41,7 +47,7 @@ namespace AnotherWorldProject.ControllerSystem
             if (hit.transform.TryGetComponent<Unit>(out Unit unit))
             {
                 SetSelectedUnit(unit);
-                
+                unit.GetMoveAction().GetValidActionGridPositionList();
                 return true;
             }
             return false;
