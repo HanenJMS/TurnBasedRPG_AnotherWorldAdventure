@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.AI;
 namespace AnotherWorldProject.ActionSystem
 {
-    public class MoveAction : MonoBehaviour
+    public class MoveAction : BaseAction
     {
         Vector3 targetPosition;
         GridPosition gridPosition;
         NavMeshAgent agent;
         [SerializeField] Animator unitAnimator;
         [SerializeField] int minDistance= 2, maxDistance = 2;
+        bool isActive = false;
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
@@ -21,10 +22,11 @@ namespace AnotherWorldProject.ActionSystem
         }
         private void Start()
         {
-            gridPosition = LevelGridSystem.Instance.GetGridPosition(targetPosition);
+            gridPosition = LevelGridSystem.Instance.GetGridPosition(this.transform.position);
         }
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             Animation_RunningAim();
         }
         private void Animation_RunningAim()
@@ -32,15 +34,12 @@ namespace AnotherWorldProject.ActionSystem
             unitAnimator.SetBool("isRunning", Vector3.Distance(targetPosition, this.transform.position) > agent.stoppingDistance);
             agent.speed = 2.957f;
         }
-        public bool IsValidActionOnGridPosition(GridPosition gridPosition)
-        {
-            return GetValidActionGridPositionList().Contains(gridPosition);
-        }
 
-        public List<GridPosition> GetValidActionGridPositionList()
+        public override List<GridPosition> GetValidActionGridPositionList()
         {
             List<GridPosition> validGridPositionList = new();
-            for(int x = -maxDistance; x <= maxDistance; x++)
+            gridPosition = LevelGridSystem.Instance.GetGridPosition(this.transform.position);
+            for (int x = -maxDistance; x <= maxDistance; x++)
             {
                 for (int z = -maxDistance; z <= maxDistance; z++)
                 {
@@ -58,6 +57,12 @@ namespace AnotherWorldProject.ActionSystem
             this.targetPosition = LevelGridSystem.Instance.GetWorldPosition(targetPosition);
             this.transform.LookAt(this.targetPosition);
             agent.SetDestination(this.targetPosition);
+            isActive = true;
+        }
+        protected override void Cancel()
+        {
+            base.Cancel();
+            unitAnimator.SetBool("isRunning", isActive);
         }
     }
 }

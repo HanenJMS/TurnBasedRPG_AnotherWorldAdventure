@@ -10,12 +10,14 @@ namespace AnotherWorldProject.GridSystem
         int width, height;
         float cellSize;
         Dictionary<GridPosition, GridObject> grid;
+        List<GridPosition> allGridPositions;
         public GridSystem(int width, int height, float cellSize)
         {
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
             this.grid = new Dictionary<GridPosition, GridObject>();
+            this.allGridPositions = new();
             for (int x = 0; x < width; x++)
             {
                 for(int z = 0; z< height; z++)
@@ -23,6 +25,7 @@ namespace AnotherWorldProject.GridSystem
                     GridPosition gridPosition = new GridPosition(x, z);
                     GridObject newObject = new GridObject(this, gridPosition);
                     grid.Add(gridPosition, newObject);
+                    allGridPositions.Add(gridPosition);
                 }
             }
         }
@@ -37,15 +40,11 @@ namespace AnotherWorldProject.GridSystem
         }
         public void CreateDebugObject(Transform debugPrefab)
         {
-            for(int x = 0; x < width;x++)
+            foreach(KeyValuePair<GridPosition, GridObject> gridPosition in grid)
             {
-                for(int z = 0; z< height; z++)
-                {
-                    GridPosition gridPosition = new(x, z);
-                    Transform debugobject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
-                    GridDebugObject gridDebugObject = debugobject.GetComponent<GridDebugObject>();
-                    gridDebugObject.SetGridObject(GetGridObject(gridPosition));
-                }
+                Transform debugobject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition.Key), Quaternion.identity);
+                GridDebugObject gridDebugObject = debugobject.GetComponent<GridDebugObject>();
+                gridDebugObject.SetGridObject(gridPosition.Value);
             }
         }
         public GridObject GetGridObject(GridPosition gridPosition)
@@ -55,6 +54,10 @@ namespace AnotherWorldProject.GridSystem
         public bool isValidGridPosition(GridPosition gridPosition)
         {
             return gridPosition.x >= 0 && gridPosition.z >= 0 && gridPosition.x < width && gridPosition.z < height;
+        }
+        public List<GridPosition> GetAllGridPositions()
+        {
+            return allGridPositions;
         }
     }
 

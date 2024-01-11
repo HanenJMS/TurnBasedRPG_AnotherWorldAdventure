@@ -1,4 +1,5 @@
 using AnotherWorldProject.UnitSystem;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace AnotherWorldProject.GridSystem
     public class LevelGridSystem : MonoBehaviour
     {
         public static LevelGridSystem Instance { get; private set; }
+        public Action onUpdateGridPosition;
         [SerializeField] Transform debugObject;
         GridSystem gridSystem;
         // Start is called before the first frame update
@@ -36,6 +38,7 @@ namespace AnotherWorldProject.GridSystem
         {
             RemoveUnitAtGridPosition(from, unit);
             AddUnitAtGridPosition(to, unit);
+            onUpdateGridPosition?.Invoke();
         }
         public List<Unit> GetUnitsAtGridPosition(GridPosition gridPosition)
         {
@@ -58,6 +61,10 @@ namespace AnotherWorldProject.GridSystem
         public bool IsValidGridPosition(GridPosition gridPosition)
         {
             return gridSystem.isValidGridPosition(gridPosition);
+        }
+        public List<GridPosition> GetAllGridPositions()
+        {
+            return gridSystem.GetAllGridPositions();
         }
     }
 }

@@ -24,7 +24,6 @@ namespace AnotherWorldProject.ControllerSystem
 
         void Update()
         {
-            
             if (Input.GetMouseButtonDown(0))
             {
                 if (TryHandleUnitSelection()) return;
@@ -32,7 +31,10 @@ namespace AnotherWorldProject.ControllerSystem
                 GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
                 if(LevelGridSystem.Instance.IsValidGridPosition(mousePosition))
                 {
-                    selectedUnit.GetMoveAction().Move(mousePosition);
+                    if(selectedUnit.GetMoveAction().IsValidActionOnGridPosition(mousePosition))
+                    {
+                        selectedUnit.GetMoveAction().Move(mousePosition);
+                    }
                 }
             }
         }
@@ -47,7 +49,6 @@ namespace AnotherWorldProject.ControllerSystem
             if (hit.transform.TryGetComponent<Unit>(out Unit unit))
             {
                 SetSelectedUnit(unit);
-                unit.GetMoveAction().GetValidActionGridPositionList();
                 return true;
             }
             return false;
