@@ -9,6 +9,7 @@ namespace AnotherWorldProject.ActionSystem
     public abstract class BaseAction : MonoBehaviour
     {
         protected bool isActive = false;
+        
         protected virtual void Update()
         {
             if (!isActive)
