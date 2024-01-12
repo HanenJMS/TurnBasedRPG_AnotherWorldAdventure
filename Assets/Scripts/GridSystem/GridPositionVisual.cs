@@ -4,9 +4,9 @@ using System.ComponentModel;
 using UnityEngine;
 namespace AnotherWorldProject.GridSystem
 {
-    public class GridSystemVisual : MonoBehaviour
+    public class GridPositionVisual : MonoBehaviour
     {
-        public static GridSystemVisual Instance { get; private set; }
+        public static GridPositionVisual Instance { get; private set; }
         
         [SerializeField] Transform gridPositionVisual;
         Dictionary<GridPosition, MeshRenderer> gridPositionVisualList;
@@ -26,8 +26,9 @@ namespace AnotherWorldProject.GridSystem
                 Transform gridVisualTransform = Instantiate(gridPositionVisual, LevelGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity, this.transform);
                 gridPositionVisualList.Add(gridPosition, gridVisualTransform.GetComponentInChildren<MeshRenderer>());
             }
-            UnitActionSystem.instance.onSelectedUnit += ShowSelectedUnitMoveActionVisual;
-            LevelGridSystem.Instance.onUpdateGridPosition += ShowSelectedUnitMoveActionVisual;
+            UnitActionSystem.instance.onSelectedUnit += ShowSelectedUnitSelectedActionVisual;
+            LevelGridSystem.Instance.onUpdateGridPosition += ShowSelectedUnitSelectedActionVisual;
+            UnitActionSystem.instance.onSelectedAction += ShowSelectedUnitSelectedActionVisual;
             HideAllGridPosition();
         }
         void HideAllGridPosition()
@@ -37,9 +38,9 @@ namespace AnotherWorldProject.GridSystem
                 grid.Value.enabled = false;
             }
         }
-        void ShowSelectedUnitMoveActionVisual()
+        void ShowSelectedUnitSelectedActionVisual()
         {
-            ShowGridPositions(UnitActionSystem.instance.GetSelectedUnit().GetMoveAction().GetValidActionGridPositionList());
+            ShowGridPositions(UnitActionSystem.instance.GetSelectedAction().GetValidActionGridPositionList());
         }
         void ShowGridPositions(List<GridPosition> positions)
         {

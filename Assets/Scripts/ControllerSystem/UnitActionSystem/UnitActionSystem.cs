@@ -1,3 +1,4 @@
+using AnotherWorldProject.ActionSystem;
 using AnotherWorldProject.GridSystem;
 using AnotherWorldProject.UnitSystem;
 using System;
@@ -9,7 +10,10 @@ namespace AnotherWorldProject.ControllerSystem
         public static UnitActionSystem instance { get; set; } 
         [SerializeField] Unit selectedUnit;
         [SerializeField] LayerMask unitLayerMask;
+        BaseAction selectedAction;
         public Action onSelectedUnit;
+        public Action onSelectedAction;
+        public Action onActionExecuted;
         // Update is called once per frame
 
         private void Awake()
@@ -28,19 +32,39 @@ namespace AnotherWorldProject.ControllerSystem
             {
                 if (TryHandleUnitSelection()) return;
 
-                GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
-                if(LevelGridSystem.Instance.IsValidGridPosition(mousePosition))
-                {
-                    if(selectedUnit.GetMoveAction().IsValidActionOnGridPosition(mousePosition))
-                    {
-                        selectedUnit.GetMoveAction().Move(mousePosition);
-                    }
-                }
+
+            }
+            if(Input.GetMouseButtonDown(1))
+            {
+                if(TryHandleSelectedAction()) return;
             }
         }
+
+        private bool TryHandleSelectedAction()
+        {
+            GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
+            if (!LevelGridSystem.Instance.IsValidGridPosition(mousePosition)) return false;
+            if (!selectedAction.IsValidActionOnGridPosition(mousePosition)) return false;
+            if (!selectedUnit.GetActionHandler().HasEnoughActionPoints(selectedAction)) return false;
+
+            selectedAction.ExecuteActionOnGridPosition(mousePosition);
+            onActionExecuted?.Invoke();
+            return true;
+                
+        }
+
         public Unit GetSelectedUnit()
         {
             return selectedUnit;
+        }
+        public BaseAction GetSelectedAction()
+        {
+            return selectedAction;
+        }
+        public void SetSelectedAction(BaseAction selectedAction)
+        {
+            this.selectedAction = selectedAction;
+            onSelectedAction?.Invoke();
         }
         bool TryHandleUnitSelection()
         {
@@ -56,6 +80,7 @@ namespace AnotherWorldProject.ControllerSystem
         void SetSelectedUnit(Unit unit)
         {
             selectedUnit = unit;
+            selectedAction = unit.GetActionHandler().GetAllActions()[0];
             onSelectedUnit?.Invoke();
         }
     }

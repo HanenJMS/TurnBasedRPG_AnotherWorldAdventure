@@ -11,9 +11,9 @@ namespace AnotherWorldProject.ActionSystem
         NavMeshAgent agent;
         [SerializeField] Animator unitAnimator;
         [SerializeField] int minDistance= 2, maxDistance = 2;
-        bool isActive = false;
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             agent = GetComponent<NavMeshAgent>();
             unitAnimator = GetComponentInChildren<Animator>();
             unitAnimator.SetBool("isRunning", false);
@@ -34,7 +34,6 @@ namespace AnotherWorldProject.ActionSystem
             unitAnimator.SetBool("isRunning", Vector3.Distance(targetPosition, this.transform.position) > agent.stoppingDistance);
             agent.speed = 2.957f;
         }
-
         public override List<GridPosition> GetValidActionGridPositionList()
         {
             List<GridPosition> validGridPositionList = new();
@@ -52,14 +51,15 @@ namespace AnotherWorldProject.ActionSystem
             }
             return validGridPositionList;
         }
-        public void Move(GridPosition targetPosition)
+        public override void ExecuteActionOnGridPosition(GridPosition targetPosition)
         {
             this.targetPosition = LevelGridSystem.Instance.GetWorldPosition(targetPosition);
             this.transform.LookAt(this.targetPosition);
             agent.SetDestination(this.targetPosition);
+            base.StartAction();
             isActive = true;
         }
-        protected override void Cancel()
+        public override void Cancel()
         {
             base.Cancel();
             unitAnimator.SetBool("isRunning", isActive);

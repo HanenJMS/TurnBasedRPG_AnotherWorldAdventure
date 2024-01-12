@@ -21,6 +21,10 @@ namespace AnotherWorldProject.GridSystem
         {
             unitList.Remove(unit);
         }
+        public bool Hasunits()
+        {
+            return unitList.Count > 0;  
+        }
         public List<Unit> GetUnitList()
         {
             return unitList;

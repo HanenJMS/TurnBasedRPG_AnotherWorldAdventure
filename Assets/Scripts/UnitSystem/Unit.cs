@@ -7,14 +7,18 @@ namespace AnotherWorldProject.UnitSystem
     {
 
         GridPosition gridPosition;
-        //[SerializeField] Animator unitAnimator;
+        ActionHandler actionHandler;
         MoveAction moveAction;
         float minDistance = 1f;
-
+        private void Awake()
+        {
+            actionHandler = GetComponent<ActionHandler>();
+        }
         private void Start()
         {
             TryGetComponent<MoveAction>(out moveAction);
             gridPosition = LevelGridSystem.Instance.GetGridPosition(this.transform.position);
+            LevelGridSystem.Instance.AddUnitAtGridPosition(gridPosition, this);
         }
         private void Update()
         {
@@ -27,7 +31,10 @@ namespace AnotherWorldProject.UnitSystem
             }
         }
 
-
+        public ActionHandler GetActionHandler()
+        {
+            return actionHandler;
+        }
         public MoveAction GetMoveAction()
         {
             return moveAction;
