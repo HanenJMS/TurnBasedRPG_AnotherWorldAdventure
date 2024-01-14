@@ -7,7 +7,7 @@ namespace AnotherWorldProject.ControllerSystem
 {
     public class UnitActionSystem : MonoBehaviour
     {
-        public static UnitActionSystem instance { get; set; } 
+        public static UnitActionSystem Instance { get; set; } 
         [SerializeField] Unit selectedUnit;
         [SerializeField] LayerMask unitLayerMask;
         BaseAction selectedAction;
@@ -18,12 +18,12 @@ namespace AnotherWorldProject.ControllerSystem
 
         private void Awake()
         {
-            if (instance != null)
+            if (Instance != null)
             {
                 Destroy(this);
                 return;
             }
-            instance = this;
+            Instance = this;
         }
 
         void Update()
@@ -39,14 +39,24 @@ namespace AnotherWorldProject.ControllerSystem
                 if(TryHandleSelectedAction()) return;
             }
         }
-
+        bool TryHandleUnitSelection()
+        {
+            RaycastHit hit = MouseWorld.GetRaycastHit(unitLayerMask);
+            if (hit.transform == null) return false;
+            if (hit.transform.TryGetComponent<Unit>(out Unit unit))
+            {
+                if (unit.GetFactionHandler().IsEnemyFaction()) return false;
+                SetSelectedUnit(unit);
+                return true;
+            }
+            return false;
+        }
         private bool TryHandleSelectedAction()
         {
             GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
             if (!LevelGridSystem.Instance.IsValidGridPosition(mousePosition)) return false;
             if (!selectedAction.IsValidActionOnGridPosition(mousePosition)) return false;
             if (!selectedUnit.GetActionHandler().HasEnoughActionPoints(selectedAction)) return false;
-
             selectedAction.ExecuteActionOnGridPosition(mousePosition);
             onActionExecuted?.Invoke();
             return true;
@@ -66,17 +76,7 @@ namespace AnotherWorldProject.ControllerSystem
             this.selectedAction = selectedAction;
             onSelectedAction?.Invoke();
         }
-        bool TryHandleUnitSelection()
-        {
-            RaycastHit hit = MouseWorld.GetRaycastHit(unitLayerMask);
-            if (hit.transform == null) return false;
-            if (hit.transform.TryGetComponent<Unit>(out Unit unit))
-            {
-                SetSelectedUnit(unit);
-                return true;
-            }
-            return false;
-        }
+
         void SetSelectedUnit(Unit unit)
         {
             selectedUnit = unit;

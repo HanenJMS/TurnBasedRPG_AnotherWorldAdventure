@@ -26,9 +26,9 @@ namespace AnotherWorldProject.GridSystem
                 Transform gridVisualTransform = Instantiate(gridPositionVisual, LevelGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity, this.transform);
                 gridPositionVisualList.Add(gridPosition, gridVisualTransform.GetComponentInChildren<MeshRenderer>());
             }
-            UnitActionSystem.instance.onSelectedUnit += ShowSelectedUnitSelectedActionVisual;
+            UnitActionSystem.Instance.onSelectedUnit += ShowSelectedUnitSelectedActionVisual;
             LevelGridSystem.Instance.onUpdateGridPosition += ShowSelectedUnitSelectedActionVisual;
-            UnitActionSystem.instance.onSelectedAction += ShowSelectedUnitSelectedActionVisual;
+            UnitActionSystem.Instance.onSelectedAction += ShowSelectedUnitSelectedActionVisual;
             HideAllGridPosition();
         }
         void HideAllGridPosition()
@@ -40,7 +40,7 @@ namespace AnotherWorldProject.GridSystem
         }
         void ShowSelectedUnitSelectedActionVisual()
         {
-            ShowGridPositions(UnitActionSystem.instance.GetSelectedAction().GetValidActionGridPositionList());
+            ShowGridPositions(UnitActionSystem.Instance.GetSelectedAction().GetValidActionGridPositionList());
         }
         void ShowGridPositions(List<GridPosition> positions)
         {

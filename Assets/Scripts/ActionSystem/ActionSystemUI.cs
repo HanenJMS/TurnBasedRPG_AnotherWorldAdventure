@@ -1,7 +1,6 @@
 using AnotherWorldProject.ControllerSystem;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 namespace AnotherWorldProject.ActionSystem
@@ -15,24 +14,25 @@ namespace AnotherWorldProject.ActionSystem
         List<ActionButtonUI> buttons = new();
         private void Start()
         {
-            UnitActionSystem.instance.onSelectedUnit += ShowAvailableActions;
-            UnitActionSystem.instance.onSelectedAction += UpdateActionSelectedVisual;
-            UnitActionSystem.instance.onSelectedUnit += ActionPointVisual;
-            UnitActionSystem.instance.onActionExecuted += ActionPointVisual;
+            UnitActionSystem.Instance.onSelectedUnit += ShowAvailableActions;
+            UnitActionSystem.Instance.onSelectedAction += UpdateActionSelectedVisual;
+            UnitActionSystem.Instance.onSelectedUnit += ActionPointVisual;
+            UnitActionSystem.Instance.onActionExecuted += ActionPointVisual;
+            TurnSystem.Instance.onTimerChanged += ActionPointVisual;
             ActionPointVisual();
         }
         private void Update()
         {
-            
+
         }
         void ShowAvailableActions()
         {
             ClearButtonsUI();
-            foreach(BaseAction action in UnitActionSystem.instance.GetSelectedUnit().GetActionHandler().GetAllActions())
+            foreach (BaseAction action in UnitActionSystem.Instance.GetSelectedUnit().GetActionHandler().GetAllActions())
             {
 
                 actions.Add(action);
-                
+
                 GameObject newActionButton = Instantiate(actionButtonPrefab, actionUIContainer);
                 //TextMeshProUGUI actionName = newActionButton.GetComponentInChildren<TextMeshProUGUI>();
                 //actionName.text = action.ToString();
@@ -42,23 +42,23 @@ namespace AnotherWorldProject.ActionSystem
                 butttonUI.SetAction(action);
                 buttons.Add(butttonUI);
             }
-            
+
         }
 
         void ActionPointVisual()
         {
-            ActionPointText.text = $"Action Points: {UnitActionSystem.instance.GetSelectedUnit().GetActionHandler().GetCurrentActionPoints()}";
+            ActionPointText.text = $"Action Points: {UnitActionSystem.Instance.GetSelectedUnit().GetActionHandler().GetCurrentActionPoints()}";
         }
         void UpdateActionSelectedVisual()
         {
-            foreach(ActionButtonUI button in buttons)
+            foreach (ActionButtonUI button in buttons)
             {
                 button.UpdateSelectedVisual();
             }
         }
         void ClearButtonsUI()
         {
-            foreach(ActionButtonUI button in buttons)
+            foreach (ActionButtonUI button in buttons)
             {
                 Destroy(button.gameObject);
             }

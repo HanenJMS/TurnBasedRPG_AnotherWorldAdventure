@@ -7,22 +7,20 @@ namespace AnotherWorldProject.ActionSystem
     public class MoveAction : BaseAction
     {
         Vector3 targetPosition;
-        GridPosition gridPosition;
         NavMeshAgent agent;
-        [SerializeField] Animator unitAnimator;
         [SerializeField] int minDistance= 2, maxDistance = 2;
         protected override void Awake()
         {
             base.Awake();
             agent = GetComponent<NavMeshAgent>();
-            unitAnimator = GetComponentInChildren<Animator>();
-            unitAnimator.SetBool("isRunning", false);
+            animator.SetBool(this.ActionName, false);
             targetPosition = this.transform.position;
             
         }
         private void Start()
         {
             gridPosition = LevelGridSystem.Instance.GetGridPosition(this.transform.position);
+            
         }
         protected override void Update()
         {
@@ -31,7 +29,7 @@ namespace AnotherWorldProject.ActionSystem
         }
         private void Animation_RunningAim()
         {
-            unitAnimator.SetBool("isRunning", Vector3.Distance(targetPosition, this.transform.position) > agent.stoppingDistance);
+            animator.SetBool(this.ActionName, Vector3.Distance(targetPosition, this.transform.position) > agent.stoppingDistance);
             agent.speed = 2.957f;
         }
         public override List<GridPosition> GetValidActionGridPositionList()
@@ -57,12 +55,10 @@ namespace AnotherWorldProject.ActionSystem
             this.transform.LookAt(this.targetPosition);
             agent.SetDestination(this.targetPosition);
             base.StartAction();
-            isActive = true;
         }
         public override void Cancel()
         {
             base.Cancel();
-            unitAnimator.SetBool("isRunning", isActive);
         }
     }
 }

@@ -59,6 +59,10 @@ namespace AnotherWorldProject.GridSystem
         {
             return allGridPositions;
         }
+        public float GetGridCellSize()
+        {
+            return cellSize;
+        }
     }
 
 }

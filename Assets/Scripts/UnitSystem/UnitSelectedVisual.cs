@@ -13,24 +13,17 @@ namespace AnotherWorldProject.UnitSystem
         }
         void Start()
         {
-            UnitActionSystem.instance.onSelectedUnit += OnSelectedUnit;
+            UnitActionSystem.Instance.onSelectedUnit += OnSelectedUnit;
             UpdateVisual();
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
         void OnSelectedUnit()
         {
             UpdateVisual();
         }
-
         private void UpdateVisual()
         {
-            if (UnitActionSystem.instance.GetSelectedUnit() == null) return;
-            meshRenderer.enabled = (UnitActionSystem.instance.GetSelectedUnit() == unit);
+            if (UnitActionSystem.Instance.GetSelectedUnit() == null) return;
+            meshRenderer.enabled = (UnitActionSystem.Instance.GetSelectedUnit() == unit);
         }
     }
 }

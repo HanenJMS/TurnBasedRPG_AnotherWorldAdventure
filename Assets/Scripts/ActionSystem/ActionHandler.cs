@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using UnityEditor;
+using AnotherWorldProject.ControllerSystem;
 using UnityEngine;
 
 namespace AnotherWorldProject.ActionSystem
@@ -10,10 +9,16 @@ namespace AnotherWorldProject.ActionSystem
         BaseAction[] actions;
         [SerializeField] int MaxActionPoints = 100;
         [SerializeField] int currentActionPoints;
+        [SerializeField] int restorePointsPerTurn = 1;
         private void Awake()
         {
             actions = GetComponents<BaseAction>();
             currentActionPoints = MaxActionPoints;
+            
+        }
+        private void Start()
+        {
+            TurnSystem.Instance.onTimerChanged += RestoreActionPoints;
         }
         public BaseAction[] GetAllActions()
         {
@@ -27,7 +32,7 @@ namespace AnotherWorldProject.ActionSystem
                 Cancel();
             }
             currentAction = action;
-            
+
         }
         public bool IsRunningAction()
         {
@@ -51,6 +56,11 @@ namespace AnotherWorldProject.ActionSystem
             if (currentAction == null) return;
             currentAction.Cancel();
             currentAction = null;
+        }
+        public void RestoreActionPoints()
+        {
+            if (currentActionPoints >= MaxActionPoints) return;
+            Mathf.Clamp(currentActionPoints += restorePointsPerTurn, 0, MaxActionPoints);
         }
     }
 }

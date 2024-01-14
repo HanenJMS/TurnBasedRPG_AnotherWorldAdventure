@@ -1,5 +1,7 @@
 using AnotherWorldProject.ActionSystem;
+using AnotherWorldProject.FactionSystem;
 using AnotherWorldProject.GridSystem;
+using AnotherWorldProject.HealthSystem;
 using UnityEngine;
 namespace AnotherWorldProject.UnitSystem
 {
@@ -8,11 +10,15 @@ namespace AnotherWorldProject.UnitSystem
 
         GridPosition gridPosition;
         ActionHandler actionHandler;
+        FactionHandler factionHandler;
+        HealthHandler healthHandler;
         MoveAction moveAction;
         float minDistance = 1f;
         private void Awake()
         {
             actionHandler = GetComponent<ActionHandler>();
+            factionHandler = GetComponent<FactionHandler>();
+            healthHandler = GetComponent<HealthHandler>();
         }
         private void Start()
         {
@@ -31,15 +37,22 @@ namespace AnotherWorldProject.UnitSystem
             }
         }
 
+        public FactionHandler GetFactionHandler()
+        {
+            return factionHandler;
+        }
         public ActionHandler GetActionHandler()
         {
             return actionHandler;
         }
-        public MoveAction GetMoveAction()
+        public HealthHandler GetHealthHandler()
         {
-            return moveAction;
+            return healthHandler;
         }
-
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(this.transform.position, 2f * 2);
+        }
     }
 }
 

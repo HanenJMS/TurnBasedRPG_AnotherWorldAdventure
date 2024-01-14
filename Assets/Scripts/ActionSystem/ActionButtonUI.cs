@@ -1,8 +1,5 @@
 using AnotherWorldProject.ControllerSystem;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,12 +28,12 @@ namespace AnotherWorldProject.ActionSystem
             nameText.text = actionName;
             button.onClick.AddListener(() =>
             {
-                UnitActionSystem.instance.SetSelectedAction(action);
+                UnitActionSystem.Instance.SetSelectedAction(action);
             });
         }
         public void UpdateSelectedVisual()
         {
-            selectedActionVisual.SetActive(UnitActionSystem.instance.GetSelectedAction() == this.action);
+            selectedActionVisual.SetActive(UnitActionSystem.Instance.GetSelectedAction() == this.action);
         }
         public override string ToString()
         {
