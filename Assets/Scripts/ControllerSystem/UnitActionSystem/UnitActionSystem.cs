@@ -25,7 +25,10 @@ namespace AnotherWorldProject.ControllerSystem
             }
             Instance = this;
         }
-
+        private void Start()
+        {
+            selectedAction = selectedUnit.gameObject.GetComponent<MoveAction>();
+        }
         void Update()
         {
             if (Input.GetMouseButtonDown(0))
@@ -45,7 +48,7 @@ namespace AnotherWorldProject.ControllerSystem
             if (hit.transform == null) return false;
             if (hit.transform.TryGetComponent<Unit>(out Unit unit))
             {
-                if (unit.GetFactionHandler().IsEnemyFaction()) return false;
+                if (unit.GetFactionHandler().GetFactionName() != "Player") return false;
                 SetSelectedUnit(unit);
                 return true;
             }
@@ -54,6 +57,7 @@ namespace AnotherWorldProject.ControllerSystem
         private bool TryHandleSelectedAction()
         {
             GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
+            if (selectedAction == null) return false;
             if (!LevelGridSystem.Instance.IsValidGridPosition(mousePosition)) return false;
             if (!selectedAction.IsValidActionOnGridPosition(mousePosition)) return false;
             if (!selectedUnit.GetActionHandler().HasEnoughActionPoints(selectedAction)) return false;

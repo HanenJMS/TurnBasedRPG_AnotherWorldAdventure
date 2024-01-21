@@ -6,23 +6,18 @@ namespace AnotherWorldProject.HealthSystem
     {
         [SerializeField] int maxHealth = 100;
         [SerializeField] int currentHealth = 0;
-        [SerializeField] bool isDead = false;
         public void AddHealth(int health)
         {
             Mathf.Clamp(currentHealth += health, 0, maxHealth);
         }
         public void RemoveHealth(int health)
         {
-            if (isDead) return;
             Mathf.Clamp(currentHealth -= health, 0, maxHealth);
-            if(currentHealth <= 0)
-            {
-                isDead = true;
-            }
         }
-        public bool IsDead()
+
+        public float GetCurrentHealthPercentage()
         {
-            return isDead;
+            return Mathf.Clamp01((float)currentHealth / maxHealth);
         }
         public int GetCurrentHealth()
         {

@@ -9,6 +9,7 @@ namespace AnotherWorldProject.GridSystem
     {
         public static LevelGridSystem Instance { get; private set; }
         public Action onUpdateGridPosition;
+        [SerializeField] int width, height, cellsize;
         [SerializeField] Transform debugObject;
         GridSystem gridSystem;
         // Start is called before the first frame update
@@ -21,7 +22,7 @@ namespace AnotherWorldProject.GridSystem
             }
             Instance = this;
 
-            gridSystem = new GridSystem(10, 10, 2);
+            gridSystem = new GridSystem(width, height, cellsize);
             gridSystem.CreateDebugObject(debugObject);
         }
 

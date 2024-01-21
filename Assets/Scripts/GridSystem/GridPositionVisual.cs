@@ -40,6 +40,7 @@ namespace AnotherWorldProject.GridSystem
         }
         void ShowSelectedUnitSelectedActionVisual()
         {
+            if (UnitActionSystem.Instance.GetSelectedAction() == null) return;
             ShowGridPositions(UnitActionSystem.Instance.GetSelectedAction().GetValidActionGridPositionList());
         }
         void ShowGridPositions(List<GridPosition> positions)

@@ -7,9 +7,9 @@ namespace AnotherWorldProject.FactionSystem
     {
         [SerializeField]Faction currentFaction;
 
-        public bool IsEnemyFaction()
+        public string GetFactionName()
         {
-            return currentFaction.GetIsEnemyFaction();
+            return currentFaction.GetFaction();
         }
     }
 }

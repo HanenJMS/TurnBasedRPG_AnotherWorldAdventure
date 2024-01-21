@@ -1,18 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
+using AnotherWorldProject.ActionSystem;
+using AnotherWorldProject.AISystem;
 using UnityEngine;
-
-public class Unit_MonsterAI : MonoBehaviour
+namespace AnotherWorldProject.UnitSystem
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Unit_MonsterAI : MonoBehaviour
     {
-        
-    }
+        Unit aiUnit;
+        Unit targetUnit;
+        MoveAction movingAction;
+        ShootAction shootingAction;
+        AIHandler aiHandler;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+        AIStateMachine aiStateMachine;
+        float patrolRadius = 10f;
+
+
+
+        private void Awake()
+        {
+            aiUnit = GetComponent<Unit>();
+            movingAction = GetComponent<MoveAction>();
+            shootingAction = GetComponent<ShootAction>();
+            aiHandler = GetComponent<AIHandler>();
+        }
+
+        private void Update()
+        {
+        }
+
+        void Guard()
+        {
+            
+        }
+        void Patrol()
+        {
+
+        }
+        void Attack()
+        {
+
+        }
     }
 }
+

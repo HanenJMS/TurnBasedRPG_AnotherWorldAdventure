@@ -8,40 +8,45 @@ namespace AnotherWorldProject.ActionSystem
     public abstract class BaseAction : MonoBehaviour
     {
         [SerializeField] protected string ActionName = "BaseAction";
+
         protected bool isActive = false;
+        protected bool isTriggered = false;
+
+        [SerializeField]protected float maxActionCooldown = 0f;
+        [SerializeField]protected float currentActionCooldown = float.MaxValue;
+        [SerializeField] int actionCost = 1;
+
         ActionHandler actionHandler;
         protected UnitAnimator animator;
-        protected GridPosition gridPosition;
-        [SerializeField] int actionCost = 1;
+        protected Unit unitTarget;
+        protected GridPosition targetGridPosition;
+        
         protected virtual void Awake()
         {
             actionHandler = GetComponent<ActionHandler>();
             animator = GetComponentInChildren<UnitAnimator>();
+            animator.SetBool(this.ActionName, false);
+            isTriggered = false;
         }
-        private void Start()
+        private void Update()
         {
-            animator.onAnimationStart += StartAnimation;
-            animator.onEndAnimation += EndAnimation;
+            currentActionCooldown += Time.deltaTime;
         }
-        protected virtual void Update()
+        private void OnEnable()
         {
-            if (!isActive)
-            {
-                Cancel();
-                return;
-            }
+            animator.onAnimationStart += AnimationStart;
+            animator.onAnimationEnd += AnimationEnd;
         }
-        
-        //Action
-        protected void StartAction()
-        {
 
+        protected virtual void StartAction()
+        {
             isActive = true;
-            actionHandler.SetCurrentAction(this);
+            currentActionCooldown = 0f;
+            actionHandler.StartAction(this);
             actionHandler.UseActionPoints(this);
             animator.SetBool(this.ActionName, isActive);
         }
-        protected void EndAction()
+        protected virtual void EndAction()
         {
             actionHandler.Cancel();
         }
@@ -52,34 +57,48 @@ namespace AnotherWorldProject.ActionSystem
         public virtual void Cancel()
         {
             isActive = false;
-            animator.SetBool(this.ActionName, false);
+            
+            animator.SetBool(this.ActionName, isActive);
         }
-        public virtual int GetActionCost()
-        {
-            return actionCost;
-        }
-
-        //Grid 
+        
+        //action executers
+        public abstract void ExecuteActionOnUnit(Unit target);
         public abstract void ExecuteActionOnGridPosition(GridPosition gridPosition);
+
+        //validation
         public bool IsValidActionOnGridPosition(GridPosition gridPosition)
         {
             return GetValidActionGridPositionList().Contains(gridPosition);
         }
         public abstract List<GridPosition> GetValidActionGridPositionList();
+        public bool IsActionOnCooldown()
+        {
+            return currentActionCooldown < maxActionCooldown;
+        }
+
 
         //Animation
-        public virtual void StartAnimation()
+        void StartAnimation()
         {
 
         }
-        public virtual void EndAnimation()
+        
+        //animation action events
+        protected virtual void AnimationStart()
         {
-
         }
-        //
+        protected virtual void AnimationEnd()
+        {
+        }
+
+        //action information
         public override string ToString()
         {
             return this.ActionName;
+        }
+        public virtual int GetActionCost()
+        {
+            return actionCost;
         }
     }
 }

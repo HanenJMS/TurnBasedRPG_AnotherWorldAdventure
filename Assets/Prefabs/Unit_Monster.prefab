@@ -8,6 +8,27 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 489303840409089664, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.066037714
+      objectReference: {fileID: 0}
+    - target: {fileID: 489303840409089664, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.066037714
+      objectReference: {fileID: 0}
+    - target: {fileID: 489303840409089664, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.066037714
+      objectReference: {fileID: 0}
+    - target: {fileID: 1101575412505699765, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: ragDollDeath
+      value: 
+      objectReference: {fileID: 4832047176779142350, guid: f231a8d2c59597f4cb3b928cfbbad8f9,
+        type: 3}
     - target: {fileID: 1308432442294812715, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -73,10 +94,51 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit_Monster
       objectReference: {fileID: 0}
+    - target: {fileID: 1423476314124916250, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: ragDollDeath
+      value: 
+      objectReference: {fileID: 1423476314124916248, guid: f231a8d2c59597f4cb3b928cfbbad8f9,
+        type: 3}
     - target: {fileID: 1738518696833161547, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
         type: 3}
       propertyPath: currentFaction.isEnemy
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1738518696833161547, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: currentFaction.factionName
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014696128387753154, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.09019609
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014696128387753154, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.19467771
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014696128387753154, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.7176471
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118706189039373970, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: damage
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118706189039373970, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: maxActionCooldown
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9143806876528743273, guid: 7b442a87fcb3fd2439b60e2b7fe5a67f,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

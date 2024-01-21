@@ -20,9 +20,21 @@ namespace AnotherWorldProject.ActionSystem
         {
             TurnSystem.Instance.onTimerChanged += RestoreActionPoints;
         }
+        private void OnDestroy()
+        {
+            TurnSystem.Instance.onTimerChanged -= RestoreActionPoints;
+        }
         public BaseAction[] GetAllActions()
         {
             return actions;
+        }
+        public void StartAction(BaseAction action)
+        {
+            if (currentAction != null)
+            {
+                Cancel();
+            }
+            currentAction = action;
         }
         public void SetCurrentAction(BaseAction action)
         {
@@ -62,6 +74,7 @@ namespace AnotherWorldProject.ActionSystem
             if (currentActionPoints >= MaxActionPoints) return;
             Mathf.Clamp(currentActionPoints += restorePointsPerTurn, 0, MaxActionPoints);
         }
+
     }
 }
 

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AnotherWorldProject.ControllerSystem
@@ -19,7 +17,11 @@ namespace AnotherWorldProject.ControllerSystem
             }
             Instance = this;
         }
-        public int GetTurnNumber() => currentTurn;
+        public int GetTurnNumber()
+        {
+            return currentTurn;
+        }
+
         private void Update()
         {
             currentTimer += Time.deltaTime * 1f;

@@ -25,6 +25,10 @@ namespace AnotherWorldProject.UnitSystem
             if (UnitActionSystem.Instance.GetSelectedUnit() == null) return;
             meshRenderer.enabled = (UnitActionSystem.Instance.GetSelectedUnit() == unit);
         }
+        private void OnDestroy()
+        {
+            UnitActionSystem.Instance.onSelectedUnit -= OnSelectedUnit;
+        }
     }
 }
 

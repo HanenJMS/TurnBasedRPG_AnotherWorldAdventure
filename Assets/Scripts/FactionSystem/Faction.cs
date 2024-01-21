@@ -6,11 +6,11 @@ namespace AnotherWorldProject.FactionSystem
     [System.Serializable]
     public class Faction
     {
-        [SerializeField]bool isEnemy = false;
+        [SerializeField] string factionName = "";
         
-        public bool GetIsEnemyFaction()
+        public string GetFaction()
         {
-            return isEnemy;
+            return factionName;
         }
     }
 }

@@ -7,15 +7,23 @@ namespace AnotherWorldProject.UnitSystem
     {
         [SerializeField] Animator animator;
         public Action onAnimationStart;
-        public Action onEndAnimation;
+        public Action onAnimationEnd;
 
+        public void SetFloat(string AnimationName,  float Value)
+        {
+            animator.SetFloat(AnimationName, Value);
+        }
         public void SetBool(string AnimationName, bool runAnimation)
         {
             animator.SetBool(AnimationName, runAnimation);
         }
-        public void TriggerAnimationEvent(string AnimationName)
+        public void SetTrigger(string AnimationName)
         {
             animator.SetTrigger(AnimationName);
+        }
+        public void ResetTrigger(string AnimationName)
+        {
+            animator.ResetTrigger(AnimationName);
         }
         public void StartAnimation()
         {
@@ -23,7 +31,7 @@ namespace AnotherWorldProject.UnitSystem
         }
         public void EndAnimation()
         {
-            onEndAnimation?.Invoke();
+            onAnimationEnd?.Invoke();
         }
     }
 }
