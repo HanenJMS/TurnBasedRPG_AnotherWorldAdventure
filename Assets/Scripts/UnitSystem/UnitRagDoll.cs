@@ -25,4 +25,14 @@ public class UnitRagDoll : MonoBehaviour
             }
         }
     }
+    private void OnEnable()
+    {
+        StartCoroutine(DestroyRagdoll());
+    }
+
+    private IEnumerator DestroyRagdoll()
+    {
+        yield return new WaitForSeconds(1.0f);
+        Destroy(this.gameObject);
+    }
 }

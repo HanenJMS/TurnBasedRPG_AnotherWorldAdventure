@@ -11,7 +11,7 @@ namespace AnotherWorldProject.GridSystem
         public Action onUpdateGridPosition;
         [SerializeField] int width, height, cellsize;
         [SerializeField] Transform debugObject;
-        GridSystem gridSystem;
+        GridSystem<GridObject> gridSystem;
         // Start is called before the first frame update
         private void Awake()
         {
@@ -22,8 +22,8 @@ namespace AnotherWorldProject.GridSystem
             }
             Instance = this;
 
-            gridSystem = new GridSystem(width, height, cellsize);
-            gridSystem.CreateDebugObject(debugObject);
+            gridSystem = new GridSystem<GridObject>(width, height, cellsize, (GridSystem<GridObject> g, GridPosition gridPosition) => new(g, gridPosition));
+            //gridSystem.CreateDebugObject(debugObject);
         }
 
         //Handling Unit

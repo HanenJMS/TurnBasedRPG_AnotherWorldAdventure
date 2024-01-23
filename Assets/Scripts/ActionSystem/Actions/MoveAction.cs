@@ -86,7 +86,7 @@ namespace AnotherWorldProject.ActionSystem
         }
         public bool IsMoving()
         {
-            return agent.hasPath;
+            return Vector3.Distance(targetPosition, this.transform.position) >= agent.stoppingDistance;
         }
     }
 }

@@ -1,30 +1,31 @@
 
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 namespace AnotherWorldProject.GridSystem
 {
-    public class GridSystem
+    public class GridSystem<TGridObject>
     {
         int width, height;
         float cellSize;
-        Dictionary<GridPosition, GridObject> grid;
+        Dictionary<GridPosition, TGridObject> grid;
         List<GridPosition> allGridPositions;
-        public GridSystem(int width, int height, float cellSize)
+        public GridSystem(int width, int height, float cellSize, Func<GridSystem<TGridObject>, GridPosition, TGridObject> CreateGridObject)
         {
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
-            this.grid = new Dictionary<GridPosition, GridObject>();
+            this.grid = new Dictionary<GridPosition, TGridObject>();
             this.allGridPositions = new();
             for (int x = 0; x < width; x++)
             {
                 for(int z = 0; z< height; z++)
                 {
                     GridPosition gridPosition = new GridPosition(x, z);
-                    GridObject newObject = new GridObject(this, gridPosition);
-                    grid.Add(gridPosition, newObject);
+                   
+                    grid.Add(gridPosition, CreateGridObject(this, gridPosition));
                     allGridPositions.Add(gridPosition);
                 }
             }
@@ -40,14 +41,14 @@ namespace AnotherWorldProject.GridSystem
         }
         public void CreateDebugObject(Transform debugPrefab)
         {
-            foreach(KeyValuePair<GridPosition, GridObject> gridPosition in grid)
+            foreach(KeyValuePair<GridPosition, TGridObject> gridPosition in grid)
             {
                 Transform debugobject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition.Key), Quaternion.identity);
                 GridDebugObject gridDebugObject = debugobject.GetComponent<GridDebugObject>();
                 gridDebugObject.SetGridObject(gridPosition.Value);
             }
         }
-        public GridObject GetGridObject(GridPosition gridPosition)
+        public TGridObject GetGridObject(GridPosition gridPosition)
         {
             return grid[gridPosition];
         }

@@ -28,6 +28,15 @@ namespace AnotherWorldProject.ActionSystem
         {
             return actions;
         }
+        public T GetAction<T>() where T : BaseAction
+        {
+            foreach(BaseAction baseAction in actions)
+            {
+                if(baseAction is T)
+                    return baseAction as T;
+            }
+            return null;
+        }
         public void StartAction(BaseAction action)
         {
             if (currentAction != null)

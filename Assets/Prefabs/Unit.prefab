@@ -45,7 +45,7 @@ Transform:
   - {fileID: 1087806269062516410}
   - {fileID: 8933386025804973137}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &1423476314124916251
 NavMeshAgent:
@@ -1069,11 +1069,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8428313728628635590, guid: 1a78d00aeefe9cb41be4cc131cf4adca,
-        type: 3}
-      propertyPath: detectionRadius
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

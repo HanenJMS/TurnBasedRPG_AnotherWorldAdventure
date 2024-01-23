@@ -16,6 +16,7 @@ namespace AnotherWorldProject.AISystem
         private void Awake()
         {
             detector = GetComponentInChildren<AIDetection>();
+            defaultState = GetComponentInChildren<PatrolState>();
             aiUnit = GetComponent<Unit>();
         }
         private void Start()
@@ -29,14 +30,13 @@ namespace AnotherWorldProject.AISystem
                 currentState.RunStateBehavior();
             }
         }
-        void SetGuardState()
+        public void SetGuardState()
         {
-            SetCurrentState(this.gameObject.GetComponentInChildren<GuardState>());
+            SetCurrentState(this.gameObject.GetComponentInChildren<AttackState>());
         }
         public void SetCurrentState(AIStateMachine state)
         {
             if (currentState == state) return;
-            if (currentState is AttackState) return;
             if (currentState != null)
             {
                 Cancel();

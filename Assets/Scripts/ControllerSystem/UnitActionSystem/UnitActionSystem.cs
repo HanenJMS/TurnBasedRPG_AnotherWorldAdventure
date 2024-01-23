@@ -27,7 +27,7 @@ namespace AnotherWorldProject.ControllerSystem
         }
         private void Start()
         {
-            selectedAction = selectedUnit.gameObject.GetComponent<MoveAction>();
+            selectedAction = selectedUnit.GetActionHandler().GetAction<MoveAction>();
         }
         void Update()
         {

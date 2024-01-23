@@ -1,8 +1,6 @@
 using AnotherWorldProject.ActionSystem;
-using AnotherWorldProject.FactionSystem;
 using AnotherWorldProject.GridSystem;
 using AnotherWorldProject.UnitSystem;
-using System;
 using UnityEngine;
 
 
@@ -10,13 +8,11 @@ namespace AnotherWorldProject.AISystem
 {
     public class PatrolState : AIStateMachine
     {
-        MoveAction moveAction;
         ActionHandler actionHandler;
         GridPosition patrolPosition;
         protected override void Awake()
         {
             base.Awake();
-            moveAction = GetComponentInParent<MoveAction>();
             actionHandler = GetComponentInParent<ActionHandler>();
 
         }
@@ -26,14 +22,30 @@ namespace AnotherWorldProject.AISystem
         }
         public override void RunStateBehavior()
         {
-            if (moveAction.IsMoving()) return;
-            int indexCount = moveAction.GetValidActionGridPositionList().Count;
-            if (indexCount <= 0) return;
-            patrolPosition = moveAction.GetValidActionGridPositionList()[UnityEngine.Random.Range(minInclusive: 0, indexCount)];
-            if(moveAction.IsValidActionOnGridPosition(patrolPosition))
+            if (actionHandler.GetAction<MoveAction>().IsMoving()) return;
+            Debug.Log("Searching");
+            foreach (Unit unit in aiHandler.GetDetectedUnitList())
             {
-                moveAction.ExecuteActionOnGridPosition(patrolPosition);
+                
+                if(unit.GetFactionHandler().GetFactionName() != GetComponentInParent<Unit>().GetFactionHandler().GetFactionName())
+                {
+                    aiHandler.SetGuardState();
+                    Debug.Log("GoGuard");
+                    return;
+                }
             }
+            int indexCount = actionHandler.GetAction<MoveAction>().GetValidActionGridPositionList().Count;
+            if (indexCount <= 0) return;
+            patrolPosition = actionHandler.GetAction<MoveAction>().GetValidActionGridPositionList()[UnityEngine.Random.Range(minInclusive: 0, indexCount)];
+            if (actionHandler.GetAction<MoveAction>().IsValidActionOnGridPosition(patrolPosition))
+            {
+                actionHandler.GetAction<MoveAction>().ExecuteActionOnGridPosition(patrolPosition);
+                Debug.Log("Patrolling");
+            }
+        }
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(this.transform.position, 5f);
         }
     }
 }

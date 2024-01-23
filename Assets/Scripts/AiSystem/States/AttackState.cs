@@ -8,14 +8,10 @@ namespace AnotherWorldProject.AISystem
     public class AttackState : AIStateMachine
     {
         [SerializeField] Unit Target;
-        MoveAction moveAction;
-        ShootAction shootAction;
         ActionHandler actionHandler;
         protected override void Awake()
         {
             base.Awake();
-            moveAction = GetComponentInParent<MoveAction>();
-            shootAction = GetComponentInParent<ShootAction>();
             actionHandler = GetComponentInParent<ActionHandler>();
         }
 
@@ -34,17 +30,17 @@ namespace AnotherWorldProject.AISystem
             GridPosition targetPosition = LevelGridSystem.Instance.GetGridPosition(Target.transform.position);
             if (!IsMovingToTarget())
             {
-                if (!actionHandler.HasEnoughActionPoints(shootAction)) return;
-                shootAction.ExecuteActionOnUnit(Target);
+                if (!actionHandler.HasEnoughActionPoints(actionHandler.GetAction<ShootAction>())) return;
+                actionHandler.GetAction<ShootAction>().ExecuteActionOnUnit(Target);
                 Debug.Log("isShooting");
             }
         }
         public bool IsMovingToTarget()
         {
-            
-            moveAction.MoveToWithinStoppingDistance(shootAction.GetWeaponRange());
-            moveAction.ExecuteActionOnUnit(Target);
-            return Vector3.Distance(Target.transform.position, this.transform.position) > shootAction.GetWeaponRange();
+
+            actionHandler.GetAction<MoveAction>().MoveToWithinStoppingDistance(actionHandler.GetAction<ShootAction>().GetWeaponRange());
+            actionHandler.GetAction<MoveAction>().ExecuteActionOnUnit(Target);
+            return Vector3.Distance(Target.transform.position, this.transform.position) > actionHandler.GetAction<ShootAction>().GetWeaponRange();
         }
         private bool HasTargetEnemy()
         {

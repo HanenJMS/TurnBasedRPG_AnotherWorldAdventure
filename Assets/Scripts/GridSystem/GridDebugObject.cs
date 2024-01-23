@@ -4,15 +4,15 @@ namespace AnotherWorldProject.GridSystem
 {
     public class GridDebugObject : MonoBehaviour
     {
-        GridObject gridObject;
-        [SerializeField] TextMeshPro text;
-        public void SetGridObject(GridObject gridObject)
+        object gridObject;
+        [SerializeField] TextMeshPro GridPosition;
+        public virtual void SetGridObject(object gridObject)
         {
             this.gridObject = gridObject;
         }
-        private void Update()
+        protected virtual void Update()
         {
-            text.text = gridObject.ToString();
+            GridPosition.text = gridObject.ToString();
         }
     }
 }

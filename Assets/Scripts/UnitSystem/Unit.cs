@@ -12,7 +12,6 @@ namespace AnotherWorldProject.UnitSystem
         FactionHandler factionHandler;
         HealthHandler healthHandler;
         UnitRagdollHandler ragdollHandler;
-        MoveAction moveAction;
         float minDistance = 1f;
         private void Awake()
         {
@@ -23,7 +22,6 @@ namespace AnotherWorldProject.UnitSystem
         }
         private void Start()
         {
-            TryGetComponent<MoveAction>(out moveAction);
             gridPosition = LevelGridSystem.Instance.GetGridPosition(this.transform.position);
             LevelGridSystem.Instance.AddUnitAtGridPosition(gridPosition, this);
             healthHandler.onDead += UnitDied;
@@ -62,10 +60,7 @@ namespace AnotherWorldProject.UnitSystem
         {
             LevelGridSystem.Instance.RemoveUnitAtGridPosition(this.gridPosition, this);
         }
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(this.transform.position, 2f * 2);
-        }
+
     }
 }
 
