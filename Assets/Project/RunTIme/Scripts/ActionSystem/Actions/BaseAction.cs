@@ -44,7 +44,7 @@ namespace AnotherWorldProject.ActionSystem
             currentActionCooldown = 0f;
             actionHandler.StartAction(this);
             actionHandler.UseActionPoints(this);
-            animator.SetBool(this.ActionName, isActive);
+            StartAnimation();
         }
         protected virtual void EndAction()
         {
@@ -57,8 +57,8 @@ namespace AnotherWorldProject.ActionSystem
         public virtual void Cancel()
         {
             isActive = false;
-            
-            animator.SetBool(this.ActionName, isActive);
+
+            EndAnimation();
         }
         
         //action executers
@@ -78,10 +78,10 @@ namespace AnotherWorldProject.ActionSystem
 
 
         //Animation
-        void StartAnimation()
+        protected virtual void StartAnimation()
         {
-
         }
+        protected abstract void EndAnimation();
         
         //animation action events
         protected virtual void AnimationStart()

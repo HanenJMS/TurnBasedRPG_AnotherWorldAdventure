@@ -61,6 +61,7 @@ namespace AnotherWorldProject.ControllerSystem
             if (!LevelGridSystem.Instance.IsValidGridPosition(mousePosition)) return false;
             if (!selectedAction.IsValidActionOnGridPosition(mousePosition)) return false;
             if (!selectedUnit.GetActionHandler().HasEnoughActionPoints(selectedAction)) return false;
+            if (selectedAction.IsActionOnCooldown()) return false;
             selectedAction.ExecuteActionOnGridPosition(mousePosition);
             onActionExecuted?.Invoke();
             return true;

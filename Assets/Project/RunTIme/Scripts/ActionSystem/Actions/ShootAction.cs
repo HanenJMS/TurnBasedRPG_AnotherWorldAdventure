@@ -10,22 +10,36 @@ namespace AnotherWorldProject.ActionSystem
     {
         [SerializeField] int shootingRange = 2;
         [SerializeField] int damage = 1;
+        [SerializeField] string Shoot = "Shoot";
+        [SerializeField] string StopShooting = "StopShooting";
         //[SerializeField] Unit targetUnit;
         [SerializeField] Transform bulletProjectile;
         [SerializeField] Transform shootPointTransform;
 
         public override void ExecuteActionOnGridPosition(GridPosition gridPosition)
         {
-            if (currentActionCooldown < maxActionCooldown) return;
+            if (IsActionOnCooldown()) return;
             base.StartAction();
             Attack(gridPosition);
         }
         public override void ExecuteActionOnUnit(Unit unit)
         {
-            if (currentActionCooldown < maxActionCooldown) return;
+            if (IsActionOnCooldown()) return;
+            
             base.StartAction();
             unitTarget = unit;
             AttackUnit();
+        }
+        protected override void StartAnimation()
+        {
+
+            animator.SetTrigger(Shoot);
+            animator.ResetTrigger(StopShooting);
+        }
+        protected override void EndAnimation()
+        {
+            animator.ResetTrigger(Shoot);
+            animator.SetTrigger(StopShooting);
         }
         public override List<GridPosition> GetValidActionGridPositionList()
         {

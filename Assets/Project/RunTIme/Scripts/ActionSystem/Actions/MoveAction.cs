@@ -28,11 +28,14 @@ namespace AnotherWorldProject.ActionSystem
             targetGridPosition = LevelGridSystem.Instance.GetGridPosition(this.transform.position);
             
         }
-        //protected override void RunActionLogic()
-        //{
-        //    Animation_RunningAim();
-        //    isActive = Vector3.Distance(targetPosition, this.transform.position) > agent.stoppingDistance;
-        //}
+        protected override void StartAnimation()
+        {
+            animator.SetBool(ActionName, isActive);
+        }
+        protected override void EndAnimation()
+        {
+            animator.SetBool(ActionName, isActive);
+        }
         private void UpdateAnimator()
         {
             Vector3 velocity = agent.velocity;

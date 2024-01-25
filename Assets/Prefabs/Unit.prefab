@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActionName: Move
-  maxActionCooldown: 1
+  maxActionCooldown: 0
   currentActionCooldown: 3.4028235e+38
   actionCost: 0
   minDistance: 2
@@ -176,6 +176,8 @@ MonoBehaviour:
   actionCost: 1
   shootingRange: 2
   damage: 1
+  Shoot: Shoot
+  StopShooting: StopShooting
   bulletProjectile: {fileID: 4643915893979845941, guid: 9bf8202eec8bac04b974671e33095f84,
     type: 3}
   shootPointTransform: {fileID: 6334173889779782847}
