@@ -8,6 +8,7 @@ namespace AnotherWorldProject.ActionSystem
     public class MoveAction : BaseAction
     {
         Vector3 targetPosition;
+        Queue<GridPosition> movingQueue = new();
         NavMeshAgent agent;
         float speed = 0f;
         [SerializeField] int minDistance= 2, maxDistance = 2;
@@ -17,11 +18,22 @@ namespace AnotherWorldProject.ActionSystem
             agent = GetComponent<NavMeshAgent>();
             
             targetPosition = this.transform.position;
-            
         }
         private void Update()
         {
             UpdateAnimator();
+            if (movingQueue.Count > 0)
+            {
+                if (GetIsInDistance())
+                {
+                    this.targetPosition = LevelGridSystem.Instance.GetWorldPosition(movingQueue.Dequeue());
+                }
+
+                this.transform.LookAt(this.targetPosition);
+                agent.SetDestination(this.targetPosition);
+            }
+            
+            
         }
         private void Start()
         {
@@ -47,6 +59,10 @@ namespace AnotherWorldProject.ActionSystem
         {
             agent.stoppingDistance = stoppingDistance;
         }
+        public bool GetIsInDistance()
+        {
+            return Vector3.Distance(targetPosition, this.transform.position) <= agent.stoppingDistance;
+        }
         public int GetGridMaxDistance()
         {
             return maxDistance;
@@ -63,6 +79,7 @@ namespace AnotherWorldProject.ActionSystem
                     GridPosition testingPosition = targetGridPosition + potentialPosition;
                     if (!LevelGridSystem.Instance.IsValidGridPosition(testingPosition)) continue;
                     if (targetGridPosition == testingPosition) continue;
+                    if (Pathfinding.Instance.GetNode(testingPosition).GetIsPathBlocked()) continue;
                     validGridPositionList.Add(testingPosition);
                 }
             }
@@ -71,14 +88,14 @@ namespace AnotherWorldProject.ActionSystem
         public override void ExecuteActionOnGridPosition(GridPosition targetPosition)
         {
             base.StartAction();
-            this.targetPosition = LevelGridSystem.Instance.GetWorldPosition(targetPosition);
-            this.transform.LookAt(this.targetPosition);
-            agent.SetDestination(this.targetPosition);
-            
+            movingQueue.Clear();
+            movingQueue = new(Pathfinding.Instance.FindPath(LevelGridSystem.Instance.GetGridPosition(this.transform.position), targetPosition));
+
         }
         public override void Cancel()
         {
             base.Cancel();
+            movingQueue.Clear();
         }
 
         public override void ExecuteActionOnUnit(Unit target)

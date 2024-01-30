@@ -8,14 +8,38 @@ namespace AnotherWorldProject.GridSystem
         const int Move_Straight_Cost = 10;
         const int Move_Diagonal_Cost = 14;
 
+        public static Pathfinding Instance { get; private set; }
         [SerializeField] private Transform gridDebugObject;
         GridSystem<PathNode> gridSystem;
         [SerializeField] int width, height;
         [SerializeField] float cellSize;
+        [SerializeField] LayerMask obstacleLayerMask;
         private void Awake()
         {
+            if(Instance != null)
+            {
+                Destroy(this);
+                return;
+            }
+            Instance = this;
             gridSystem = new GridSystem<PathNode>(width, height, cellSize, (GridSystem<PathNode> g, GridPosition gp) => new PathNode(gp));
-            gridSystem.CreateDebugObject(gridDebugObject);
+            //gridSystem.CreateDebugObject(gridDebugObject);
+        }
+        private void Start()
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int z = 0; z < height; z++)
+                {
+                    GridPosition gridPosition = new GridPosition(x,z);
+                    Vector3 worldPosition = LevelGridSystem.Instance.GetWorldPosition(gridPosition);
+                    float raycastoffsetDistance = 5f;
+                    if (Physics.Raycast(worldPosition + Vector3.down * raycastoffsetDistance, Vector3.up, raycastoffsetDistance * 2, obstacleLayerMask))
+                    {
+                        GetNode(new(x,z)).SetIsBlocked(true);
+                    }
+                }
+            }
         }
         private void Update()
         {
@@ -60,6 +84,11 @@ namespace AnotherWorldProject.GridSystem
                 foreach (PathNode neighborNode in GetNeighborNodeList(currentNode))
                 {
                     if (closedList.Contains(neighborNode)) continue;
+                    if (neighborNode.GetIsPathBlocked())
+                    {
+                        closedList.Add(neighborNode);
+                        continue;
+                    }
                     int tentativegCost = currentNode.GetgCost() + CalculateDistance(currentNode.GetGridPosition(), neighborNode.GetGridPosition());
                     if (tentativegCost < neighborNode.GetgCost())
                     {
@@ -106,7 +135,7 @@ namespace AnotherWorldProject.GridSystem
             }
             return LowestFCostPathNode;
         }
-        PathNode GetNode(GridPosition gridPosition)
+        public PathNode GetNode(GridPosition gridPosition)
         {
             return gridSystem.GetGridObject(gridPosition);
         }

@@ -23,7 +23,7 @@ namespace AnotherWorldProject.GridSystem
             Instance = this;
 
             gridSystem = new GridSystem<GridObject>(width, height, cellsize, (GridSystem<GridObject> g, GridPosition gridPosition) => new(g, gridPosition));
-            gridSystem.CreateDebugObject(debugObject);
+            //gridSystem.CreateDebugObject(debugObject);
         }
 
         //Handling Unit

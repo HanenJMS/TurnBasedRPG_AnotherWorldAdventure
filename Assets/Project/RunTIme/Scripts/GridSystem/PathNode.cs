@@ -6,7 +6,7 @@ namespace AnotherWorldProject.GridSystem
         int gCost, hCost, fCost;
 
         PathNode prevNode;
-
+        bool isPathBlocked = false;
         public PathNode(GridPosition gridPosition)
         {
             this.gridPosition = gridPosition;
@@ -43,7 +43,14 @@ namespace AnotherWorldProject.GridSystem
         {
             this.fCost = fCost;
         }
-
+        public bool GetIsPathBlocked()
+        {
+            return isPathBlocked;
+        }
+        public void SetIsBlocked(bool isBlocking)
+        {
+            isPathBlocked = isBlocking;
+        }
         public void CalculateFCost()
         {
             fCost = gCost + hCost;
