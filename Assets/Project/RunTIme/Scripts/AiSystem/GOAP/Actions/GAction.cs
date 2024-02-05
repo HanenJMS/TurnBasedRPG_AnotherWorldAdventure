@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,10 +8,17 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
     {
         [SerializeField] string actionName;
         [SerializeField] float actionCost = 1.0f;
-        [SerializeField] GameObject target;
+        [SerializeField] protected GameObject target;
         NavMeshAgent agent;
         [SerializeField] float duration = 0f;
         [SerializeField] bool isRunning = false;
+
+        [SerializeField] GWorldState[] desiredStates;
+        [SerializeField] GWorldState[] undesiredStates;
+
+        //represents Global world states
+        [SerializeField] GWorldState[] desiredWorldStates;
+        [SerializeField] GWorldState[] undesiredWorldStates;
 
         [SerializeField] GWorldState[] condition;
         [SerializeField] GWorldState[] result;
@@ -20,16 +26,30 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         Dictionary<string, int> preConditions;
         Dictionary<string, int> resultConditions;
 
-        GWorldStates agentStates;
+        
 
+
+        protected GWorldStates agentStates;
+        protected GInventory inventory;
         private void Awake()
         {
             preConditions = new();
             resultConditions = new();
+            
             agent = GetComponent<NavMeshAgent>();
             InitializeConditions();
         }
-
+        private void Start()
+        {
+            agentStates = this.GetComponent<GAgent>().GetAgentStates();
+            inventory = this.GetComponent<GAgent>().GetInventory();
+        }
+        private void Update()
+        {
+            if (!isRunning) return;
+            if(!IsInDistance())
+                agent.SetDestination(target.transform.position);
+        }
         private void InitializeConditions()
         {
             if (condition != null)
@@ -47,16 +67,35 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
                 }
             }
         }
-
+        public GInventory GetWorldInventory()
+        {
+            return GWorld.Instance.GetWorldInventory();
+        }
+        public GameObject GetWorldItem(string item)
+        {
+            return GWorld.Instance.GetWorldInventory().GetInventoryItem(item);
+        }
+        public GameObject GetWorldLocation(string location)
+        {
+            return GWorld.Instance.GetWorldLocations().GetLocation(location);
+        }
+        public GWorldStates GetWorldGameStates()
+        {
+            return GWorld.Instance.GetGWorldWorldStates();
+        }
+        public GAgent GetTargetAgent(GameObject target)
+        {
+            return target.gameObject.GetComponent<GAgent>();
+        }
         public bool IsAchievable()
         {
             return true;
         }
-        public bool IsPreConditionsMet(Dictionary<string, int> conditionsAchieved)
+        public bool IsAchieveableGiven(Dictionary<string, int> conditionsAchieved)
         {
-            foreach(KeyValuePair<string, int> precondition in this.preConditions)
+            foreach (KeyValuePair<string, int> precondition in this.preConditions)
             {
-                if(!conditionsAchieved.ContainsKey(precondition.Key))
+                if (!conditionsAchieved.ContainsKey(precondition.Key))
                 {
                     return false;
                 }
@@ -66,11 +105,12 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         public void ExecuteAction()
         {
             isRunning = true;
-            agent.SetDestination(target.transform.position);
+            
         }
         public void CancelAction()
         {
             isRunning = false;
+            
         }
         public bool IsRunning()
         {
@@ -86,7 +126,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         }
         public bool IsInDistance()
         {
-            return agent.remainingDistance <= agent.stoppingDistance;
+            return Vector3.Distance(target.transform.position, this.transform.position) <= 1f;
         }
         public Dictionary<string, int> GetPreConditions()
         {
@@ -100,8 +140,13 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             return actionCost;
         }
+        public float GetDuration()
+        {
+            return duration;
+        }
         public abstract bool PreActionExecute();
         public abstract bool PostActionExecute();
+
     }
 }
 

@@ -1,3 +1,5 @@
+using AnotherWorldProject.AISystem.GOAP.Core.AgentTypes;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AnotherWorldProject.AISystem.GOAP.Core
@@ -5,21 +7,37 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
     public sealed class GWorld
     {
         private static readonly GWorld instance = new();
-        static GWorldStates world;
+        static GWorldStates GWorldWorldStates;
+        static GInventory inventory;
+        static GWorldLocations worldLocations;
         static GWorld()
         {
-            world = new();
+            GWorldWorldStates = new();
+            inventory = new();
+            worldLocations = new();
         }
         private GWorld()
         {
-            
+
         }
 
-        public static GWorld Instance { get { return instance; } }
-        public GWorldStates GetWorld()
+
+        public static GWorld Instance => instance;
+        public GWorldStates GetGWorldWorldStates()
         {
-            return world;
+            return GWorldWorldStates;
         }
+        public GWorldLocations GetWorldLocations()
+        {
+            return worldLocations;
+        }
+        public GInventory GetWorldInventory()
+        {
+            return inventory;
+        }
+
+        //Testing Code
+
     }
 }
 

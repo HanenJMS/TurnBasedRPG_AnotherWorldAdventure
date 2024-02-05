@@ -32,6 +32,14 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             return a.key != b.key;
         }
+        public static GWorldState operator +(GWorldState a, GWorldState b)
+        {
+            return new(a.key, a.value + b.value);
+        }
+        public static GWorldState operator -(GWorldState a, GWorldState b)
+        {
+            return new(a.key, a.value - b.value);
+        }
     }
 
 }

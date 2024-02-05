@@ -13,26 +13,26 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             states = new();
         }
 
-        public bool ContainsState(string state)
+        public bool ContainsState(GWorldState state)
         {
-            return states.ContainsKey(state);
+            return states.ContainsKey(state.key);
         }
-        public void ModifyState(string state, int value)
+        public void ModifyState(GWorldState state)
         {
-            if(states.ContainsKey(state))
+            if(states.ContainsKey(state.key))
             {
-                states[state] += value;
-                if (states[state] <= 0)
+                states[state.key] += state.value;
+                if (states[state.key] <= 0)
                 {
-                    RemoveState(state);
+                    RemoveState(state.key);
                 }
                 return;
             }
-            AddState(state, value);
+            AddState(state);
         }
-        void AddState(string state, int value)
+        void AddState(GWorldState state)
         {
-            states.Add(state, value);
+            states.Add(state.key, state.value);
         }
         void RemoveState(string state)
         {
@@ -41,14 +41,14 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
                 states.Remove(state);
             }
         }
-        public void SetState(string state, int value)
+        public void SetState(GWorldState state)
         {
-            if( states.ContainsKey(state))
+            if( states.ContainsKey(state.key))
             {
-                states[state] = value;
+                states[state.key] = state.value;
                 return;
             }
-            AddState(state, value);
+            AddState(state);
         }
         public Dictionary<string, int> GetStates()
         {
