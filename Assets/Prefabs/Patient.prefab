@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 7863238251000836342}
   - component: {fileID: 3411844179242744259}
   - component: {fileID: 669759619432545856}
+  - component: {fileID: 5410872014851645721}
   m_Layer: 7
   m_Name: Patient
   m_TagString: Untagged
@@ -47,7 +48,7 @@ Transform:
   - {fileID: 1160815977328386532}
   - {fileID: 6106480445486066431}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &1423476314124916251
 NavMeshAgent:
@@ -310,10 +311,33 @@ MonoBehaviour:
   duration: 0
   isRunning: 0
   condition:
-  - key: goToTreatmentRoom
+  - key: GoToTreatmentRoom
     value: 1
   result:
+  - key: GettingTreated
+    value: 1
+--- !u!114 &5410872014851645721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bc23bd70c45f92409966744bd66b3ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: 
+  actionCost: 1
+  target: {fileID: 0}
+  duration: 0
+  isRunning: 0
+  condition:
   - key: isTreated
+    value: 1
+  result:
+  - key: goHome
     value: 1
 --- !u!1 &4222132778947988247
 GameObject:

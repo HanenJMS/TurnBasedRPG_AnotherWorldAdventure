@@ -15,6 +15,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             GetWorldInventory().AddInventoryItem("PatientWaitingForTreatment", this.gameObject);
 
             agentStates.ModifyState(new("GoToTreatmentRoom", -1));
+            inventory.AddInventoryItem("TreatmentRoom", target);
             return true;
         }
     }

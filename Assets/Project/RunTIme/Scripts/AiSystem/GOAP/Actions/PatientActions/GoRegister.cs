@@ -6,6 +6,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         public override bool PreActionExecute()
         {
             if (agentStates.ContainsState(new("hasRegistered", 1))) return false;
+
             target = GetWorldLocation("Registration");
             if (target == null) return false;
             return true;

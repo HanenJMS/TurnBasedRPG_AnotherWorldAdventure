@@ -1,7 +1,3 @@
-using AnotherWorldProject.AISystem.GOAP.Core.AgentTypes;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace AnotherWorldProject.AISystem.GOAP.Core
 {
     public sealed class GWorld

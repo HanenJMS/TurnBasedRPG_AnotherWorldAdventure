@@ -13,12 +13,6 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         [SerializeField] float duration = 0f;
         [SerializeField] bool isRunning = false;
 
-        [SerializeField] GWorldState[] desiredStates;
-        [SerializeField] GWorldState[] undesiredStates;
-
-        //represents Global world states
-        [SerializeField] GWorldState[] desiredWorldStates;
-        [SerializeField] GWorldState[] undesiredWorldStates;
 
         [SerializeField] GWorldState[] condition;
         [SerializeField] GWorldState[] result;
@@ -126,7 +120,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         }
         public bool IsInDistance()
         {
-            return Vector3.Distance(target.transform.position, this.transform.position) <= 1f;
+            return Vector3.Distance(target.transform.position, this.transform.position) < 2.25f;
         }
         public Dictionary<string, int> GetPreConditions()
         {

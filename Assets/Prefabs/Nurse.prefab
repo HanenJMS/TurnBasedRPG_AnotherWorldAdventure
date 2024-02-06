@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 6908624552250104266}
   - component: {fileID: 7707821388226032809}
   - component: {fileID: 7670852030595203906}
+  - component: {fileID: 9219753517575172537}
   m_Layer: 7
   m_Name: Nurse
   m_TagString: Untagged
@@ -238,16 +239,13 @@ MonoBehaviour:
   target: {fileID: 0}
   duration: 0
   isRunning: 0
-  targetName: 
-  targetResourceName: Patient
-  targetState: FreeCubicle
   condition:
   - key: PatientWaiting
     value: 1
-  - key: FreeCubicle
+  - key: TreatmentRoom
     value: 1
   result:
-  - key: getPatient
+  - key: treatPatient
     value: 1
 --- !u!114 &7670852030595203906
 MonoBehaviour:
@@ -266,14 +264,34 @@ MonoBehaviour:
   target: {fileID: 0}
   duration: 0
   isRunning: 0
-  targetName: PatientWaitingForTreatment
-  targetResourceName: 
-  targetState: 
   condition:
   - key: PatientWaitingForTreatment
     value: 1
   result:
   - key: treatPatient
+    value: 1
+--- !u!114 &9219753517575172537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf7e6d68f817b743945a8ecafcb27b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: 
+  actionCost: 1
+  target: {fileID: 0}
+  duration: 0
+  isRunning: 0
+  condition:
+  - key: isTired
+    value: 1
+  result:
+  - key: rested
     value: 1
 --- !u!1 &4222132778947988247
 GameObject:
