@@ -5,9 +5,9 @@ namespace AnotherWorldProject.AISystem.GOAP.Core.AgentTypes
         protected override void Start()
         {
             base.Start();
-            GAgentGoal goal = new GAgentGoal("isWaiting", 1, true);
-            GAgentGoal goal2 = new ("isTreated", 1, true);
-            GAgentGoal goal3 = new("goHome", 1, true);
+            GAgentGoal goal = new GAgentGoal("isWaiting", true);
+            GAgentGoal goal2 = new ("isTreated", true);
+            GAgentGoal goal3 = new("goHome", true);
             agentGoals.Add(goal, 1);
             agentGoals.Add(goal3, 1);
             agentGoals.Add(goal2, 1);

@@ -1,3 +1,4 @@
+using AnotherWorldProject.AISystem.GOAP.StateSystem;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         GAgentGoal currentGoal;
         protected GInventory inventory = new();
         protected GWorldStates agentStates = new();
-        GGoalActionPlanner goalActionPlanner;
+        GoalActionPlanner goalActionPlanner;
         Queue<GAction> goalActionQueue;
         GAction currentAction;
 
@@ -42,10 +43,10 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             if (goalActionQueue == null || goalActionPlanner == null)
             {
                 goalActionPlanner = new();
-                var sortedGoals = from entry in agentGoals orderby entry.Value descending select entry;
+                var sortedGoals = from goals in agentGoals orderby goals.Value descending select goals;
                 foreach (KeyValuePair<GAgentGoal, int> sortedGoal in sortedGoals)
                 {
-                    goalActionQueue = goalActionPlanner.FindPlan(agentActionList, sortedGoal.Key.goalState, agentStates);
+                    goalActionQueue = goalActionPlanner.FindPlan(agentActionList, sortedGoal.Key.goal, agentStates);
                     if (goalActionQueue != null)
                     {
                         currentGoal = sortedGoal.Key;

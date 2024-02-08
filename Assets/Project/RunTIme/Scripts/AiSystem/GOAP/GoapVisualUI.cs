@@ -54,13 +54,13 @@ namespace AnotherWorldProject.AISystem.GOAP.UI
         }
         private void UpdateUnitCurrentGoalState()
         {
-            unitgoalStateText.text = "UnitGoal States" + "\n";
+            unitgoalStateText.text = "Goal : Priority" + "\n";
             if (unit != null)
             {
-                if (unit.gameObject.GetComponent<GAgent>().GetCurrentGoal().goalState == null) return;
-                foreach (KeyValuePair<string, int> states in unit.gameObject.GetComponent<GAgent>().GetCurrentGoal().goalState)
+                if (unit.gameObject.GetComponent<GAgent>().GetGoals() == null) return;
+                foreach (KeyValuePair<GAgentGoal, int> states in unit.gameObject.GetComponent<GAgent>().GetGoals())
                 {
-                    unitgoalStateText.text += states.Key + " " + states.Value + "\n";
+                    unitgoalStateText.text += states.Key.ToString() + " " + states.Value + "\n";
                 }
             }
         }

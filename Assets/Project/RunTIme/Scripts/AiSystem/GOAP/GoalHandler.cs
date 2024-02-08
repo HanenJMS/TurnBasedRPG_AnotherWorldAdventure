@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace AnotherWorldProject.AISystem.GOAP.Core
 {
-    public class GGoalHandler : MonoBehaviour
+    public class GoalHandler : MonoBehaviour
     {
         GAgentGoal currentAgentGoal;
         Dictionary<GAgentGoal, int> goals = new();
@@ -11,14 +11,11 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             return currentAgentGoal;
         }
-        public void SetCurrentGoal(GAgentGoal newGoal)
-        {
-            currentAgentGoal = newGoal;
-        }
+        
 
-        public void AddGoal(GAgentGoal goal, int priority) 
+         int GetGoalPriority(string goal)
         {
-            goals.Add(goal, priority);
+            return goals[new(goal)];
         }
     }
 }

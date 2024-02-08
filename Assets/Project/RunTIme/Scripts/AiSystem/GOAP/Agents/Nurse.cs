@@ -8,20 +8,20 @@ namespace AnotherWorldProject.AISystem.GOAP.Core.AgentTypes
         {
             base.Start();
 
-            GAgentGoal goal = new GAgentGoal("getPatient", 1, false);
-            GAgentGoal goal2 = new GAgentGoal("treatPatient", 1, false);
-            GAgentGoal goal3 = new("rested", 1, false);
-            agentGoals.Add(goal, 1);
-            agentGoals.Add(goal2, 3);
-            agentGoals.Add(goal3, 1);
+            GAgentGoal goal = new GAgentGoal("getPatient", false);
+            GAgentGoal goal2 = new GAgentGoal("treatPatient", false);
+            GAgentGoal goal3 = new("rested", false);
+            agentGoals.Add(goal, 0);
+            agentGoals.Add(goal2, 0);
+            agentGoals.Add(goal3, 0);
             Invoke("GetTired", Random.Range(10, 20));
         }
 
         void GetTired()
         {
             agentStates.ModifyState(new("isTired", 1));
-
-            Invoke("GetTired", Random.Range(5, 10));
+            agentGoals[new("rested", false)] = agentStates.GetStates()["isTired"];
+            Invoke("GetTired", Random.Range(2, 5));
         }
     }
 }

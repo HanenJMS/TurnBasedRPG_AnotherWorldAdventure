@@ -1,3 +1,5 @@
+using AnotherWorldProject.AISystem.GOAP.StateSystem;
+
 namespace AnotherWorldProject.AISystem.GOAP.Core
 {
     public sealed class GWorld

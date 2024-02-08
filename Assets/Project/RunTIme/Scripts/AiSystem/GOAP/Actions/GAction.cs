@@ -1,3 +1,4 @@
+using AnotherWorldProject.AISystem.GOAP.StateSystem;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,19 +18,19 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         [SerializeField] GWorldState[] condition;
         [SerializeField] GWorldState[] result;
 
-        Dictionary<string, int> preConditions;
-        Dictionary<string, int> resultConditions;
+        Dictionary<string, int> inConditions;
+        Dictionary<string, int> outConditions;
 
-        
+
 
 
         protected GWorldStates agentStates;
         protected GInventory inventory;
         private void Awake()
         {
-            preConditions = new();
-            resultConditions = new();
-            
+            inConditions = new();
+            outConditions = new();
+
             agent = GetComponent<NavMeshAgent>();
             InitializeConditions();
         }
@@ -41,7 +42,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         private void Update()
         {
             if (!isRunning) return;
-            if(!IsInDistance())
+            if (!IsInDistance())
                 agent.SetDestination(target.transform.position);
         }
         private void InitializeConditions()
@@ -50,14 +51,14 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             {
                 foreach (GWorldState state in condition)
                 {
-                    preConditions.Add(state.key, state.value);
+                    inConditions.Add(state.key, state.value);
                 }
             }
             if (result != null)
             {
                 foreach (GWorldState state in result)
                 {
-                    resultConditions.Add(state.key, state.value);
+                    outConditions.Add(state.key, state.value);
                 }
             }
         }
@@ -87,7 +88,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         }
         public bool IsAchieveableGiven(Dictionary<string, int> conditionsAchieved)
         {
-            foreach (KeyValuePair<string, int> precondition in this.preConditions)
+            foreach (KeyValuePair<string, int> precondition in this.inConditions)
             {
                 if (!conditionsAchieved.ContainsKey(precondition.Key))
                 {
@@ -99,12 +100,12 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         public void ExecuteAction()
         {
             isRunning = true;
-            
+
         }
         public void CancelAction()
         {
             isRunning = false;
-            
+
         }
         public bool IsRunning()
         {
@@ -124,11 +125,11 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         }
         public Dictionary<string, int> GetPreConditions()
         {
-            return preConditions;
+            return inConditions;
         }
-        public Dictionary<string, int> GetResultConditions()
+        public Dictionary<string, int> GetActionOutConditions()
         {
-            return resultConditions;
+            return outConditions;
         }
         public float GetActionCost()
         {

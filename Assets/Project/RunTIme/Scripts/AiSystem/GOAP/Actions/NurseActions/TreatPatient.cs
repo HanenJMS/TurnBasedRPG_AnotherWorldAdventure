@@ -4,6 +4,9 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
     {
         public override bool PreActionExecute()
         {
+            GAgent nurse = GetTargetAgent(this.gameObject);
+
+            nurse.GetGoals()[new("treatPatient")] = GetWorldGameStates().GetStates()["PatientWaitingForTreatment"];
             target = GetWorldItem("PatientWaitingForTreatment");
             if (target == null) return false;
             return true;

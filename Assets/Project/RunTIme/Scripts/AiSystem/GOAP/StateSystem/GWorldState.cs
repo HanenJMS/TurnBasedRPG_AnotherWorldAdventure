@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP.StateSystem
 {
     [System.Serializable]
-    public struct GWorldState
+    public struct GWorldState : IEquatable<GWorldState>
     {
         public string key;
         public int value;
@@ -21,14 +19,19 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(key, key);
         }
 
-        public static bool operator == (GWorldState a, GWorldState b)
+        public bool Equals(GWorldState other)
+        {
+            return other.key == key;
+        }
+
+        public static bool operator ==(GWorldState a, GWorldState b)
         {
             return a.key == b.key;
         }
-        public static bool operator != (GWorldState a, GWorldState b)
+        public static bool operator !=(GWorldState a, GWorldState b)
         {
             return a.key != b.key;
         }

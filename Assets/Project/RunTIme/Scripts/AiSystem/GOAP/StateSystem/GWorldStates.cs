@@ -1,25 +1,24 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP.StateSystem
 {
     public class GWorldStates
     {
         Dictionary<string, int> states;
 
-        public GWorldStates() 
+        public GWorldStates()
         {
             states = new();
         }
 
         public bool ContainsState(GWorldState state)
         {
+
             return states.ContainsKey(state.key);
         }
         public void ModifyState(GWorldState state)
         {
-            if(states.ContainsKey(state.key))
+            if (states.ContainsKey(state.key))
             {
                 states[state.key] += state.value;
                 if (states[state.key] <= 0)
@@ -36,14 +35,14 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         }
         void RemoveState(string state)
         {
-            if(states.ContainsKey(state))
+            if (states.ContainsKey(state))
             {
                 states.Remove(state);
             }
         }
         public void SetState(GWorldState state)
         {
-            if( states.ContainsKey(state.key))
+            if (states.ContainsKey(state.key))
             {
                 states[state.key] = state.value;
                 return;

@@ -1,13 +1,13 @@
-using System;
+using AnotherWorldProject.AISystem.GOAP.StateSystem;
 using System.Collections.Generic;
 using UnityEngine;
 namespace AnotherWorldProject.AISystem.GOAP.Core
 {
 
     //plan node takes parent, float, dictionary, and action)
-    public class GGoalActionPlanner
+    public class GoalActionPlanner
     {
-        public Queue<GAction> FindPlan(List<GAction> actions, Dictionary<string, int> goal, GWorldStates agentStates)
+        public Queue<GAction> FindPlan(List<GAction> actions, string goal, GWorldStates agentStates)
         {
             Queue<GAction> actionPlanSequence = new();
             Node planStart = new(null, 0, GWorld.Instance.GetGWorldWorldStates().GetStates(), null, agentStates.GetStates());
@@ -22,7 +22,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             Node lowestCostPlan = GetLowestCostPlan(planList);
             actionPlanSequence = GetActionSequence(lowestCostPlan);
             Debug.Log("Plan: ");
-            foreach(GAction action in actionPlanSequence)
+            foreach (GAction action in actionPlanSequence)
             {
                 Debug.Log(action.name);
             }
@@ -35,24 +35,24 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             List<GAction> result = new();
             while (lowestCostPlan != null)
             {
-                if(lowestCostPlan.GetAction() != null)
+                if (lowestCostPlan.GetAction() != null)
                 {
                     result.Insert(0, lowestCostPlan.GetAction());
                 }
                 lowestCostPlan = lowestCostPlan.GetParentNode();
             }
-            foreach(GAction action in result)
+            foreach (GAction action in result)
             {
                 actionPlanSequence.Enqueue(action);
             }
             return actionPlanSequence;
         }
 
-        bool IsPlanFound(Node parent, List<Node> plans, List<GAction> usableActions, Dictionary<string, int> goal)
+        bool IsPlanFound(Node parent, List<Node> plans, List<GAction> usableActions, string goal)
         {
             bool pathFound = false;
             if (usableActions.Count == 0) return false;
-            foreach(GAction action in usableActions)
+            foreach (GAction action in usableActions)
             {
                 if (!action.IsAchieveableGiven(parent.GetPlanState())) continue;
                 Dictionary<string, int> actionResultState = GetResultingConditions(parent, action);
@@ -75,7 +75,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         Dictionary<string, int> GetResultingConditions(Node parent, GAction action)
         {
             Dictionary<string, int> currentPlanStates = new(parent.GetPlanState());
-            foreach (KeyValuePair<string, int> state in action.GetResultConditions())
+            foreach (KeyValuePair<string, int> state in action.GetActionOutConditions())
             {
                 if (currentPlanStates.ContainsKey(state.Key)) continue;
                 currentPlanStates.Add(state.Key, state.Value);
@@ -88,16 +88,13 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             List<GAction> actionsList = new(actions);
             if (actionsList.Contains(removingAction)) actionsList.Remove(removingAction);
-                
+
             return actionsList;
         }
-        bool IsGoalAchieved(Dictionary<string, int> goal, Dictionary<string, int> state)
+        bool IsGoalAchieved(string goal, Dictionary<string, int> state)
         {
-            foreach(KeyValuePair<string, int> g in goal)
-            {
-                if (!state.ContainsKey(g.Key))
-                    return false;
-            }
+            if (!state.ContainsKey(goal)) return false;
+            
             return true;
         }
         Node GetLowestCostPlan(List<Node> plan)
