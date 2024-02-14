@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 3411844179242744259}
   - component: {fileID: 669759619432545856}
   - component: {fileID: 5410872014851645721}
+  - component: {fileID: 1787825906685848089}
+  - component: {fileID: 2991503313944978651}
   m_Layer: 7
   m_Name: Patient
   m_TagString: Untagged
@@ -159,7 +161,6 @@ MonoBehaviour:
   maxActionCooldown: 0
   currentActionCooldown: 3.4028235e+38
   actionCost: 0
-  minDistance: 2
   maxDistance: 2
 --- !u!114 &6118706189039373970
 MonoBehaviour:
@@ -223,7 +224,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 724ec7c9b18d873468be53e6602a5655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentActionList: []
 --- !u!114 &8258685362310572870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,6 +339,31 @@ MonoBehaviour:
   result:
   - key: goHome
     value: 1
+--- !u!114 &1787825906685848089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a970c7c60b1a2342979da44fa8d1ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2991503313944978651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e497e05947a2e4794facc94e23a6fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions: []
 --- !u!1 &4222132778947988247
 GameObject:
   m_ObjectHideFlags: 0
