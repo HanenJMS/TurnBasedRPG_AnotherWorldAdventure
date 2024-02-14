@@ -1,4 +1,3 @@
-using AnotherWorldProject.ActionSystem;
 using AnotherWorldProject.AISystem.GOAP.GoalSystem;
 using AnotherWorldProject.AISystem.GOAP.StateSystem;
 using System.Collections.Generic;
@@ -7,27 +6,28 @@ using UnityEngine;
 
 namespace AnotherWorldProject.AISystem.GOAP
 {
+    [RequireComponent(typeof(GActionHandler), typeof(GoalHandler))]
     public class GAgent : MonoBehaviour
     {
-        [SerializeField] List<GAction> agentActionList;
-        [SerializeField] protected Dictionary<Goal, int> agentGoals = new();
-        Goal currentGoal;
-        protected GInventory inventory = new();
-        protected GWorldStates agentStates = new();
-        GoalActionPlanner goalActionPlanner;
-        Queue<GAction> goalActionQueue;
-        GAction currentAction;
+        GInventory inventory = new();
+        
+        GPlanner gPlanner;
+        Queue<GAction> plannedAction;
 
         GActionHandler actionHandler;
-
+        GoalHandler goalHandler;
+        GWorldStateHandler stateHandler = new();
         protected virtual void Start()
         {
             actionHandler = GetComponent<GActionHandler>();
-            agentActionList = new List<GAction>(this.GetComponents<GAction>());
+            goalHandler = GetComponent<GoalHandler>();
         }
 
-
-        int count = 0;
+        public GActionHandler GetActionHandler() => actionHandler;
+        public GoalHandler GetGoalHandler() => goalHandler;
+        public GWorldStateHandler GetStateHandler() => stateHandler;
+        public GInventory GetInventory() => inventory;
+        
         private void LateUpdate()
         {
             if (actionHandler.HasCurrentActionRunning())
@@ -38,63 +38,52 @@ namespace AnotherWorldProject.AISystem.GOAP
                 }
                 return;
             }
-            if (goalActionQueue == null || goalActionPlanner == null)
+            bool hasPlannedAction = plannedAction != null;
+            bool hasPlanner = gPlanner != null;
+            if (!hasPlannedAction || !hasPlanner)
             {
-                goalActionPlanner = new();
-                var sortedGoals = from goals in agentGoals orderby goals.Value descending select goals;
+                gPlanner = new();
+                var sortedGoals = from goals in goalHandler.GetGoals() orderby goals.Value descending select goals;
                 foreach (KeyValuePair<Goal, int> sortedGoal in sortedGoals)
                 {
-                    goalActionQueue = goalActionPlanner.FindPlan(agentActionList, sortedGoal.Key.goal, agentStates);
-                    if (goalActionQueue != null)
+                    plannedAction = gPlanner.FindPlan(actionHandler.GetActions(), sortedGoal.Key.goal, stateHandler);
+                    if (plannedAction != null)
                     {
-                        currentGoal = sortedGoal.Key;
+                        goalHandler.SetCurrentGoal(sortedGoal.Key);
                         break;
                     }
                 }
             }
-            if (goalActionQueue != null && goalActionQueue.Count == 0)
+            if (plannedAction != null && plannedAction.Count == 0)
             {
 
                 // Check if currentGoal is removable
-                if (currentGoal.shouldRemoveGoal)
+                if (goalHandler.GetCurrentGoal().shouldRemoveGoal)
                 {
-
                     // Remove it
-                    agentGoals.Remove(currentGoal);
+                    goalHandler.RemoveCurrentGoal();
                 }
                 // Set planner = null so it will trigger a new one
-                goalActionPlanner = null;
+                gPlanner = null;
             }
-            if (goalActionQueue != null && goalActionQueue.Count > 0)
+
+            if (plannedAction != null && plannedAction.Count > 0)
             {
-                currentAction = goalActionQueue.Dequeue();
-                if (currentAction.PreActionExecute())
+                actionHandler.SetCurrentAction(plannedAction.Dequeue());
+                if (actionHandler.GetCurrentAction().PreActionExecute())
                 {
-                    if (currentAction.HasTarget())
+                    if (actionHandler.GetCurrentAction().HasTarget())
                     {
-                        currentAction.ExecuteAction();
+                        actionHandler.GetCurrentAction().ExecuteAction();
                     }
                 }
                 else
                 {
-                    goalActionQueue = null;
+                    plannedAction = null;
                 }
             }
         }
-        public Goal GetCurrentGoal()
-        {
-            return currentGoal;
-        }
 
-        public GWorldStates GetAgentStates()
-        {
-            return agentStates;
-        }
-        public GInventory GetInventory()
-        {
-            return inventory;
-        }
-        public Dictionary<Goal, int> GetGoals() => agentGoals;
     }
 }
 
