@@ -57,7 +57,7 @@ namespace AnotherWorldProject.AISystem.GOAP.UI
             unitStateText.text = "unit states" + "\n";
             if (unit != null)
             {
-                foreach (KeyValuePair<string, int> states in unit.gameObject.GetComponent<GAgent>().GetAgentStates().GetStates())
+                foreach (KeyValuePair<string, int> states in unit.gameObject.GetComponent<GAgent>().GetStateHandler().GetStates())
                 {
                     unitStateText.text += states.Key + " " + states.Value + "\n";
                 }
@@ -68,8 +68,8 @@ namespace AnotherWorldProject.AISystem.GOAP.UI
             unitgoalStateText.text = "Goal : Priority" + "\n";
             if (unit != null)
             {
-                if (unit.gameObject.GetComponent<GAgent>().GetGoals() == null) return;
-                foreach (KeyValuePair<Goal, int> states in unit.gameObject.GetComponent<GAgent>().GetGoals())
+                if (unit.gameObject.GetComponent<GAgent>().GetGoalHandler().GetGoals() == null) return;
+                foreach (KeyValuePair<Goal, int> states in unit.gameObject.GetComponent<GAgent>().GetGoalHandler().GetGoals())
                 {
                     unitgoalStateText.text += states.Key.ToString() + " " + states.Value + "\n";
                 }

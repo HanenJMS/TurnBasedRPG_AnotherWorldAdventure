@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace AnotherWorldProject.AISystem.GOAP.StateSystem
 {
-    public class GWorldStates
+    public class GWorldStateHandler
     {
         Dictionary<string, int> states;
 
-        public GWorldStates()
+        public GWorldStateHandler()
         {
             states = new();
         }

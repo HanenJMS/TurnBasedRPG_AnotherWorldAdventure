@@ -6,7 +6,7 @@ namespace AnotherWorldProject.AISystem.GOAP
     public sealed class GWorld
     {
         private static readonly GWorld instance = new();
-        static GWorldStates GWorldWorldStates;
+        static GWorldStateHandler GWorldWorldStates;
         static GInventory inventory;
         static GWorldLocations worldLocations;
         static GWorld()
@@ -22,7 +22,7 @@ namespace AnotherWorldProject.AISystem.GOAP
 
 
         public static GWorld Instance => instance;
-        public GWorldStates GetGWorldWorldStates()
+        public GWorldStateHandler GetGWorldWorldStates()
         {
             return GWorldWorldStates;
         }

@@ -11,14 +11,14 @@ namespace AnotherWorldProject.AISystem.GOAP
         [SerializeField] int maxCapacity;
         [SerializeField] int currentCapacity;
         [SerializeField] Transform locationEntrance;
-        GWorldStates locationStates = new();
+        GWorldStateHandler locationStates = new();
         GInventory inventory = new();
         void Start()
         {
             if (locationName == "") return;
             GWorld.Instance.GetWorldLocations().AddLocation(locationName, this);
         }
-        public GWorldStates GetStates()
+        public GWorldStateHandler GetStates()
         {
             return locationStates;
         }
@@ -38,7 +38,7 @@ namespace AnotherWorldProject.AISystem.GOAP
         {
             if (other.gameObject.TryGetComponent(out GAgent agent))
             {
-                agent.GetAgentStates().ModifyState(new(locationState, 1));
+                agent.GetStateHandler().ModifyState(new(locationState, 1));
             }
         }
 
@@ -46,7 +46,7 @@ namespace AnotherWorldProject.AISystem.GOAP
         {
             if (other.gameObject.TryGetComponent(out GAgent agent))
             {
-                agent.GetAgentStates().ModifyState(new(locationState, -1));
+                agent.GetStateHandler().ModifyState(new(locationState, -1));
             }
         }
     }

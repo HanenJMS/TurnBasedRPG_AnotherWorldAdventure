@@ -5,9 +5,9 @@ namespace AnotherWorldProject.AISystem.GOAP
 {
 
     //plan node takes parent, float, dictionary, and action)
-    public class GoalActionPlanner
+    public class GPlanner
     {
-        public Queue<GAction> FindPlan(List<GAction> actions, string goal, GWorldStates agentStates)
+        public Queue<GAction> FindPlan(List<GAction> actions, string goal, GWorldStateHandler agentStates)
         {
             Queue<GAction> actionPlanSequence = new();
             
