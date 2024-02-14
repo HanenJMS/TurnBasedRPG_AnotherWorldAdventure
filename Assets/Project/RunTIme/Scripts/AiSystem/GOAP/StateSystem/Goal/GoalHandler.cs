@@ -1,18 +1,27 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.VersionControl.Asset;
 namespace AnotherWorldProject.AISystem.GOAP.GoalSystem
 {
     public class GoalHandler : MonoBehaviour
     {
-        Goal currentAgentGoal;
+        Goal currentGoal;
         Dictionary<Goal, int> goals = new();
+
+        public void SetCurrentGoal(Goal goal)
+        {
+            currentGoal = goal;
+        }
         public Goal GetCurrentGoal()
         {
-            return currentAgentGoal;
+            return currentGoal;
         }
-       
+        public void RemoveCurrentGoal()
+        {
+            goals.Remove(currentGoal);
+        }
+
+
+        public Dictionary<Goal, int> GetGoals() => goals;
         public void ModifyGoal(Goal goal, int priority)
         {
             if (goals.ContainsKey(goal))
@@ -26,15 +35,23 @@ namespace AnotherWorldProject.AISystem.GOAP.GoalSystem
             }
             AddGoal(goal, priority);
         }
-        void AddGoal(Goal goal, int priority)
+        public void SetGoalPriority(Goal goal, int priority)
+        {
+            if (!goals.ContainsKey(goal)) return;
+            goals[goal] = priority;
+        }
+        public void AddGoal(Goal goal, int priority)
         {
             goals.Add(goal, priority);
         }
-        void RemoveGoal(Goal goal)
+        public void RemoveGoal(Goal goal)
         {
             if (!goals.ContainsKey(goal)) return;
             goals.Remove(goal);
         }
+
+
+
     }
 }
 
