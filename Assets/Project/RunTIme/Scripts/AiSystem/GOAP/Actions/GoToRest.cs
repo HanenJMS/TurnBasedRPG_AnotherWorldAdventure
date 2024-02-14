@@ -18,15 +18,15 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             if (agentStates.GetStates().ContainsKey("isTired"))
             {
                 if(GetTargetAgent(this.gameObject).
-                GetGoals()[new("rested")] < agentStates.GetStates()["isTired"])
+                GetGoalHandler().GetGoals()[new("rested")] < agentStates.GetStates()["isTired"])
                 {
                     GetTargetAgent(this.gameObject).
-                    GetGoals()[new("rested")] = agentStates.GetStates()["isTired"];
+                    GetGoalHandler().GetGoals()[new("rested")] = agentStates.GetStates()["isTired"];
                 }
                 if (agentStates.GetStates()["isTired"] == 0)
                 {
                     GetTargetAgent(this.gameObject).
-                    GetGoals()[new("rested")] = agentStates.GetStates()["isTired"];
+                    GetGoalHandler().GetGoals()[new("rested")] = agentStates.GetStates()["isTired"];
                 }
             }
             

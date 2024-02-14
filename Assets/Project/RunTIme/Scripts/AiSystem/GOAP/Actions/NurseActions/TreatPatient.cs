@@ -6,7 +6,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             GAgent nurse = GetTargetAgent(this.gameObject);
 
-            nurse.GetGoals()[new("treatPatient")] = GetWorldGameStates().GetStates()["PatientWaitingForTreatment"];
+            nurse.GetGoalHandler().GetGoals()[new("treatPatient")] = GetWorldGameStates().GetStates()["PatientWaitingForTreatment"];
             target = GetWorldItem("PatientWaitingForTreatment");
             if (target == null) return false;
             return true;
@@ -16,8 +16,8 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             GetWorldGameStates().ModifyState(new("PatientWaitingForTreatment", -1));
             GAgent target = GetTargetAgent(this.target);
-            target.GetAgentStates().ModifyState(new("isSick", -1));
-            target.GetAgentStates().ModifyState(new("isTreated", 1));
+            target.GetStateHandler().ModifyState(new("isSick", -1));
+            target.GetStateHandler().ModifyState(new("isTreated", 1));
             return true;
         }
     }

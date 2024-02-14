@@ -8,7 +8,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         GameObject TreatmentRoom;
         public override bool PreActionExecute()
         {
-            GetTargetAgent(this.gameObject).GetGoals()[new("getPatient")] = GetWorldGameStates().GetStates()["PatientWaiting"];
+            GetTargetAgent(this.gameObject).GetGoalHandler().GetGoals()[new("getPatient")] = GetWorldGameStates().GetStates()["PatientWaiting"];
             target = GetWorldItem("PatientWaiting");
             if (target == null) return false;
             TreatmentRoom = GetWorldItem("TreatmentRoom");
@@ -27,8 +27,8 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             TreatmentRoom = inventory.GetItem("TreatmentRoom");
             GAgent target = GetTargetAgent(this.target);
-            target.GetAgentStates().ModifyState(new("GoToTreatmentRoom", 1));
-            target.GetGoals().Add(new("GettingTreated"), 1);
+            target.GetStateHandler().ModifyState(new("GoToTreatmentRoom", 1));
+            target.GetGoalHandler().GetGoals().Add(new("GettingTreated"), 1);
             target.GetInventory().AddItem("TreatmentRoom", TreatmentRoom);
 
             return true;

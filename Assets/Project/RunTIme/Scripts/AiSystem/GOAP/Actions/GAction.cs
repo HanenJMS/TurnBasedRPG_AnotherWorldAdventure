@@ -24,7 +24,7 @@ namespace AnotherWorldProject.AISystem.GOAP
 
 
 
-        protected GWorldStates agentStates;
+        protected GWorldStateHandler agentStates;
         protected GInventory inventory;
         private void Awake()
         {
@@ -36,7 +36,7 @@ namespace AnotherWorldProject.AISystem.GOAP
         }
         private void Start()
         {
-            agentStates = this.GetComponent<GAgent>().GetAgentStates();
+            agentStates = this.GetComponent<GAgent>().GetStateHandler();
             inventory = this.GetComponent<GAgent>().GetInventory();
         }
         private void Update()
@@ -74,7 +74,7 @@ namespace AnotherWorldProject.AISystem.GOAP
         {
             return GWorld.Instance.GetWorldLocations().GetLocation(location);
         }
-        public GWorldStates GetWorldGameStates()
+        public GWorldStateHandler GetWorldGameStates()
         {
             return GWorld.Instance.GetGWorldWorldStates();
         }
