@@ -1,37 +1,46 @@
 using System.Collections.Generic;
 using UnityEngine;
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP
 {
-    public class GInventory : MonoBehaviour
+    public class GInventory
     {
-        Dictionary<string, Queue<GameObject>> inventory = new();
-
+        Dictionary<string, List<GameObject>> inventory = new();
         /// <summary>
-        /// Retrieving an item from a Queue based inventory.
+        /// Retrieving an item from a list based inventory.
         /// </summary>
-        /// <param name="itemKey">item name</param>
+        /// <param name="itemType">item name</param>
         /// <returns>returns GameObject</returns>
-        public GameObject GetInventoryItem(string itemKey)
+        public GameObject GetItem(string itemType)
         {
-            if (!inventory.ContainsKey(itemKey)) return null;
-            if (inventory[itemKey].Count == 0) return null;
-            return inventory[itemKey].Dequeue();
+            if (!inventory.ContainsKey(itemType)) return null;
+            if (inventory[itemType].Count == 0) return null;
+            GameObject item = inventory[itemType][0];
+            return item;
         }
 
-
-        public void AddInventoryItem(string itemKey, GameObject item)
+        public void AddItem(string itemType, GameObject item)
         {
-            if (inventory.ContainsKey(itemKey)) inventory[itemKey].Enqueue(item);
+            if (inventory.ContainsKey(itemType)) inventory[itemType].Add(item);
             else
             {
-                inventory.Add(itemKey, new());
-                inventory[itemKey].Enqueue(item);
+                inventory.Add(itemType, new());
+                inventory[itemType].Add(item);
             }
         }
-        public Dictionary<string, Queue<GameObject>> GetInventory() => inventory;
-        public bool HasItem(string itemKey)
+        public void RemoveItem(string itemType, GameObject item)
         {
-            return inventory[itemKey].Count == 0 || inventory[itemKey] == null;
+            if (!inventory.ContainsKey(itemType)) return;
+            if (inventory[itemType].Count == 0)
+            {
+                inventory.Remove(itemType);
+                return;
+            }
+            inventory[itemType].Remove(item);
+        }
+        public Dictionary<string, List<GameObject>> GetInventory() => inventory;
+        public bool HasItem(string itemType)
+        {
+            return inventory[itemType].Count == 0 || inventory[itemType] == null;
         }
     }
 }

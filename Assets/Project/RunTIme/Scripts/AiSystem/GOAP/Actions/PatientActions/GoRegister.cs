@@ -7,7 +7,11 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             if (agentStates.ContainsState(new("hasRegistered", 1))) return false;
 
-            target = GetWorldLocation("Registration");
+            target = inventory.
+                GetItem("atLocation").gameObject.
+                GetComponent<GLocation>().
+                GetInventory().
+                GetItem("Registration");
             if (target == null) return false;
             return true;
         }

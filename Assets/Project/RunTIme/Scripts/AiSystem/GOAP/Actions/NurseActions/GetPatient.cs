@@ -14,22 +14,22 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             TreatmentRoom = GetWorldItem("TreatmentRoom");
             if (TreatmentRoom == null)
             {
-                GetWorldInventory().AddInventoryItem("PatientWaiting", target);
+                GetWorldInventory().AddItem("PatientWaiting", target);
                 target = null;
                 return false;
             }
-            inventory.AddInventoryItem("TreatmentRoom", TreatmentRoom);
+            inventory.AddItem("TreatmentRoom", TreatmentRoom);
             GetWorldGameStates().ModifyState(new("TreatmentRoom", -1));
             return true;
         }
 
         public override bool PostActionExecute()
         {
-            TreatmentRoom = inventory.GetInventoryItem("TreatmentRoom");
+            TreatmentRoom = inventory.GetItem("TreatmentRoom");
             GAgent target = GetTargetAgent(this.target);
             target.GetAgentStates().ModifyState(new("GoToTreatmentRoom", 1));
             target.GetGoals().Add(new("GettingTreated"), 1);
-            target.GetInventory().AddInventoryItem("TreatmentRoom", TreatmentRoom);
+            target.GetInventory().AddItem("TreatmentRoom", TreatmentRoom);
 
             return true;
         }

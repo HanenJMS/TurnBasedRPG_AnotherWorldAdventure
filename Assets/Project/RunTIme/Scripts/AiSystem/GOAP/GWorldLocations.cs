@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP
 {
     public class GWorldLocations
     {
-        Dictionary<string, GameObject> locationDictionary = new();
-        internal void AddLocation(string locationName, GameObject gameObject)
+        Dictionary<string, GLocation> locationDictionary = new();
+        internal void AddLocation(string locationName, GLocation location)
         {
-            locationDictionary.Add(locationName, gameObject);
+            locationDictionary.Add(locationName, location);
         }
 
-        public GameObject GetLocation(string locationName)
+        public GLocation GetLocation(string locationName)
         {
             if (!locationDictionary.ContainsKey(locationName)) return null;
             return locationDictionary[locationName];

@@ -1,6 +1,7 @@
 using AnotherWorldProject.AISystem.GOAP.StateSystem;
+using UnityEngine;
 
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP
 {
     public sealed class GWorld
     {
@@ -24,6 +25,12 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         public GWorldStates GetGWorldWorldStates()
         {
             return GWorldWorldStates;
+        }
+        
+        public GameObject SearchWorldForItem(string item)
+        {
+            if (!inventory.HasItem(item)) return null;
+            return inventory.GetItem(item);
         }
         public GWorldLocations GetWorldLocations()
         {

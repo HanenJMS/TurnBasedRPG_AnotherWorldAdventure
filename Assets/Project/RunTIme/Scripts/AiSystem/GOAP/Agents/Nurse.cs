@@ -1,3 +1,4 @@
+using AnotherWorldProject.AISystem.GOAP.GoalSystem;
 using UnityEngine;
 
 namespace AnotherWorldProject.AISystem.GOAP.Core.AgentTypes
@@ -8,9 +9,9 @@ namespace AnotherWorldProject.AISystem.GOAP.Core.AgentTypes
         {
             base.Start();
 
-            GAgentGoal goal = new GAgentGoal("getPatient", false);
-            GAgentGoal goal2 = new GAgentGoal("treatPatient", false);
-            GAgentGoal goal3 = new("rested", false);
+            Goal goal = new Goal("getPatient", false);
+            Goal goal2 = new Goal("treatPatient", false);
+            Goal goal3 = new("rested", false);
             agentGoals.Add(goal, 0);
             agentGoals.Add(goal2, 0);
             agentGoals.Add(goal3, 0);

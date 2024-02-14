@@ -12,7 +12,6 @@ namespace AnotherWorldProject.UnitSystem
         FactionHandler factionHandler;
         HealthHandler healthHandler;
         UnitRagdollHandler ragdollHandler;
-        float minDistance = 1f;
         private void Awake()
         {
             actionHandler = GetComponent<ActionHandler>();

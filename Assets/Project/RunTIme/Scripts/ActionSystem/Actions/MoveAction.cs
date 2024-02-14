@@ -11,7 +11,7 @@ namespace AnotherWorldProject.ActionSystem
         Queue<GridPosition> movingQueue = new();
         NavMeshAgent agent;
         float speed = 0f;
-        [SerializeField] int minDistance= 2, maxDistance = 2;
+        [SerializeField] int maxDistance = 2;
         protected override void Awake()
         {
             base.Awake();

@@ -2,7 +2,7 @@ using AnotherWorldProject.AISystem.GOAP.StateSystem;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP
 {
     [System.Serializable]
     public abstract class GAction : MonoBehaviour
@@ -68,9 +68,9 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         }
         public GameObject GetWorldItem(string item)
         {
-            return GWorld.Instance.GetWorldInventory().GetInventoryItem(item);
+            return GWorld.Instance.GetWorldInventory().GetItem(item);
         }
-        public GameObject GetWorldLocation(string location)
+        public GLocation GetWorldLocation(string location)
         {
             return GWorld.Instance.GetWorldLocations().GetLocation(location);
         }
@@ -86,11 +86,11 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             return true;
         }
-        public bool IsAchieveableGiven(Dictionary<string, int> conditionsAchieved)
+        public bool IsAchieveableGiven(Dictionary<string, int> states)
         {
             foreach (KeyValuePair<string, int> precondition in this.inConditions)
             {
-                if (!conditionsAchieved.ContainsKey(precondition.Key))
+                if (!states.ContainsKey(precondition.Key))
                 {
                     return false;
                 }

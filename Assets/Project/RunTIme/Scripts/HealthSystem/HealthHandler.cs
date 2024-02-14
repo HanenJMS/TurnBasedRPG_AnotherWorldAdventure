@@ -10,7 +10,7 @@ namespace AnotherWorldProject.HealthSystem
         public Action onHealthChange;
         private void Start()
         {
-            health.SetHealth(health.GetMaxHealth());
+            health.SetCurrentHealth(health.GetMaxHealth());
             onHealthChange?.Invoke();
         }
         public void AddToCurrentHealth(int heal)
@@ -40,6 +40,11 @@ namespace AnotherWorldProject.HealthSystem
         public float GetCurrentHealthPercentage()
         {
             return health.GetCurrentHealthPercentage();
+        }
+        public void InitializeHealth(int current, int max)
+        {
+            health.SetCurrentHealth(current);
+            health.SetMaxHealth(max);
         }
         public override string ToString()
         {

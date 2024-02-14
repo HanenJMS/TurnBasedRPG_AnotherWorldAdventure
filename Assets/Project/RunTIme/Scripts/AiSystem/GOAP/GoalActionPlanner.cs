@@ -1,7 +1,7 @@
 using AnotherWorldProject.AISystem.GOAP.StateSystem;
 using System.Collections.Generic;
 using UnityEngine;
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP
 {
 
     //plan node takes parent, float, dictionary, and action)
@@ -10,6 +10,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         public Queue<GAction> FindPlan(List<GAction> actions, string goal, GWorldStates agentStates)
         {
             Queue<GAction> actionPlanSequence = new();
+            
             Node planStart = new(null, 0, GWorld.Instance.GetGWorldWorldStates().GetStates(), null, agentStates.GetStates());
             List<Node> planList = new();
             List<GAction> usableActions = GetUsableActionList(actions);

@@ -1,14 +1,14 @@
 using System;
 
 
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP.GoalSystem
 {
     [System.Serializable]
-    public struct GAgentGoal : IEquatable<GAgentGoal>
+    public struct Goal : IEquatable<Goal>
     {
         public string goal;
         public bool shouldRemoveGoal;
-        public GAgentGoal(string goal, bool shouldRemoveGoal = false)
+        public Goal(string goal, bool shouldRemoveGoal = false)
         {
             this.goal = goal;
             this.shouldRemoveGoal = shouldRemoveGoal;
@@ -17,11 +17,11 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             return goal;
         }
-        public static bool operator ==(GAgentGoal a, GAgentGoal b)
+        public static bool operator ==(Goal a, Goal b)
         {
             return a.goal == b.goal;
         }
-        public static bool operator !=(GAgentGoal a, GAgentGoal b)
+        public static bool operator !=(Goal a, Goal b)
         {
             return a.goal != b.goal;
         }
@@ -31,14 +31,14 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             return HashCode.Combine(goal, goal);
         }
 
-        public bool Equals(GAgentGoal other)
+        public bool Equals(Goal other)
         {
             return other == this;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is GAgentGoal goal && goal.goal == this.goal;
+            return obj is Goal goal && goal.goal == this.goal;
         }
     }
 }

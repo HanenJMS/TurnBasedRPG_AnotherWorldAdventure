@@ -19,14 +19,12 @@ GameObject:
   - component: {fileID: 6118706189039373970}
   - component: {fileID: 1101575412505699765}
   - component: {fileID: 2773116695763041208}
-  - component: {fileID: 7052504631139195846}
-  - component: {fileID: 8258685362310572870}
-  - component: {fileID: 7863238251000836342}
-  - component: {fileID: 3411844179242744259}
-  - component: {fileID: 669759619432545856}
-  - component: {fileID: 5410872014851645721}
+  - component: {fileID: 6908624552250104266}
+  - component: {fileID: 7707821388226032809}
+  - component: {fileID: 7670852030595203906}
+  - component: {fileID: 9219753517575172537}
   m_Layer: 7
-  m_Name: Patient
+  m_Name: Nurse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +46,7 @@ Transform:
   - {fileID: 1160815977328386532}
   - {fileID: 6106480445486066431}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &1423476314124916251
 NavMeshAgent:
@@ -211,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af20eb485a73bf46b43b298b0df67a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7052504631139195846
+--- !u!114 &6908624552250104266
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,11 +218,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1423476314124916249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 724ec7c9b18d873468be53e6602a5655, type: 3}
+  m_Script: {fileID: 11500000, guid: 3790dc80ae98d394ea7f8a9b2822ca43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agentActionList: []
---- !u!114 &8258685362310572870
+--- !u!114 &7707821388226032809
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -233,21 +231,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1423476314124916249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b85e3bb07a126f4abd434026816c3c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 897a6dbfb507a5849a5e5115adb79f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: 
   actionCost: 1
   target: {fileID: 0}
-  duration: 0
+  duration: 5
   isRunning: 0
   condition:
-  - key: isSick
+  - key: PatientWaiting
+    value: 1
+  - key: TreatmentRoom
     value: 1
   result:
-  - key: atHospital
+  - key: treatPatient
     value: 1
---- !u!114 &7863238251000836342
+--- !u!114 &7670852030595203906
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -256,21 +256,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1423476314124916249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58bf9de12a94df54dbc8bfd848008bdc, type: 3}
+  m_Script: {fileID: 11500000, guid: d44e22f05de3609438a55a8df855c5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: 
   actionCost: 1
   target: {fileID: 0}
-  duration: 0
+  duration: 20
   isRunning: 0
   condition:
-  - key: atHospital
+  - key: PatientWaitingForTreatment
     value: 1
   result:
-  - key: hasRegistered
+  - key: treatPatient
     value: 1
---- !u!114 &3411844179242744259
+--- !u!114 &9219753517575172537
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -279,65 +279,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1423476314124916249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dff5c0d89905f724cb6727b467665dd8, type: 3}
+  m_Script: {fileID: 11500000, guid: caf7e6d68f817b743945a8ecafcb27b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   actionName: 
   actionCost: 1
   target: {fileID: 0}
-  duration: 0
+  duration: 1
   isRunning: 0
   condition:
-  - key: hasRegistered
+  - key: isTired
     value: 1
   result:
-  - key: isWaiting
-    value: 1
---- !u!114 &669759619432545856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423476314124916249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a53962dfc9a6a14bab328e7fac039bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: 
-  actionCost: 1
-  target: {fileID: 0}
-  duration: 0
-  isRunning: 0
-  condition:
-  - key: GoToTreatmentRoom
-    value: 1
-  result:
-  - key: GettingTreated
-    value: 1
---- !u!114 &5410872014851645721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423476314124916249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bc23bd70c45f92409966744bd66b3ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: 
-  actionCost: 1
-  target: {fileID: 0}
-  duration: 0
-  isRunning: 0
-  condition:
-  - key: isTreated
-    value: 1
-  result:
-  - key: goHome
+  - key: rested
     value: 1
 --- !u!1 &4222132778947988247
 GameObject:

@@ -33,7 +33,7 @@ namespace AnotherWorldProject.ControllerSystem
             moveDirection.x = Input.GetAxis("Horizontal");
             moveDirection.z = Input.GetAxis("Vertical");
 
-            float moveSpeed = 5f;
+            moveSpeed = 5f;
             Vector3 moveVector = transform.forward * moveDirection.z + transform.right * moveDirection.x;
             transform.position += moveVector * moveSpeed * Time.deltaTime;
         }

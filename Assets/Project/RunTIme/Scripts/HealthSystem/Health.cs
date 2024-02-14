@@ -27,9 +27,13 @@ namespace AnotherWorldProject.HealthSystem
         {
             return maxHealth;
         }
-        public void SetHealth(int Health)
+        public void SetCurrentHealth(int Health)
         {
             currentHealth = Health;
+        }
+        public void SetMaxHealth(int health)
+        {
+            maxHealth = health;
         }
         public override string ToString()
         {

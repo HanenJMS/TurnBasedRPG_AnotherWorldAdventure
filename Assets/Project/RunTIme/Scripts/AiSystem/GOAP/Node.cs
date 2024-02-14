@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP
 {
     public class Node
 

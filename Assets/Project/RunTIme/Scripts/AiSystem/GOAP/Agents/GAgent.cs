@@ -1,42 +1,40 @@
+using AnotherWorldProject.ActionSystem;
+using AnotherWorldProject.AISystem.GOAP.GoalSystem;
 using AnotherWorldProject.AISystem.GOAP.StateSystem;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace AnotherWorldProject.AISystem.GOAP.Core
+namespace AnotherWorldProject.AISystem.GOAP
 {
     public class GAgent : MonoBehaviour
     {
         [SerializeField] List<GAction> agentActionList;
-        [SerializeField] protected Dictionary<GAgentGoal, int> agentGoals = new();
-        GAgentGoal currentGoal;
+        [SerializeField] protected Dictionary<Goal, int> agentGoals = new();
+        Goal currentGoal;
         protected GInventory inventory = new();
         protected GWorldStates agentStates = new();
         GoalActionPlanner goalActionPlanner;
         Queue<GAction> goalActionQueue;
         GAction currentAction;
 
-
+        GActionHandler actionHandler;
 
         protected virtual void Start()
         {
+            actionHandler = GetComponent<GActionHandler>();
             agentActionList = new List<GAction>(this.GetComponents<GAction>());
         }
 
 
-        void CompleteAction()
-        {
-            currentAction.CancelAction();
-            currentAction.PostActionExecute();
-            currentAction = null;
-        }
+        int count = 0;
         private void LateUpdate()
         {
-            if (currentAction != null && currentAction.IsRunning())
+            if (actionHandler.HasCurrentActionRunning())
             {
-                if (currentAction.HasPath() && currentAction.IsInDistance())
+                if (actionHandler.GetCurrentAction().IsInDistance())
                 {
-                    CompleteAction();
+                    actionHandler.InvokeComplete();
                 }
                 return;
             }
@@ -44,7 +42,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             {
                 goalActionPlanner = new();
                 var sortedGoals = from goals in agentGoals orderby goals.Value descending select goals;
-                foreach (KeyValuePair<GAgentGoal, int> sortedGoal in sortedGoals)
+                foreach (KeyValuePair<Goal, int> sortedGoal in sortedGoals)
                 {
                     goalActionQueue = goalActionPlanner.FindPlan(agentActionList, sortedGoal.Key.goal, agentStates);
                     if (goalActionQueue != null)
@@ -83,7 +81,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
                 }
             }
         }
-        public GAgentGoal GetCurrentGoal()
+        public Goal GetCurrentGoal()
         {
             return currentGoal;
         }
@@ -96,7 +94,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
         {
             return inventory;
         }
-        public Dictionary<GAgentGoal, int> GetGoals() => agentGoals;
+        public Dictionary<Goal, int> GetGoals() => agentGoals;
     }
 }
 

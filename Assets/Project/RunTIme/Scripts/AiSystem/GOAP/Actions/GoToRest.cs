@@ -7,7 +7,7 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
     {
         public override bool PreActionExecute()
         {
-            target = GetWorldLocation("RestingRoom");
+            target = GetWorldLocation("RestingRoom").gameObject;
             if (target == null) return false;
             return true;
         }
@@ -17,8 +17,17 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             agentStates.ModifyState(new("isTired", -1));
             if (agentStates.GetStates().ContainsKey("isTired"))
             {
-                GetTargetAgent(this.gameObject).
-                GetGoals()[new("rested")] = agentStates.GetStates()["isTired"];
+                if(GetTargetAgent(this.gameObject).
+                GetGoals()[new("rested")] < agentStates.GetStates()["isTired"])
+                {
+                    GetTargetAgent(this.gameObject).
+                    GetGoals()[new("rested")] = agentStates.GetStates()["isTired"];
+                }
+                if (agentStates.GetStates()["isTired"] == 0)
+                {
+                    GetTargetAgent(this.gameObject).
+                    GetGoals()[new("rested")] = agentStates.GetStates()["isTired"];
+                }
             }
             
             return true;
