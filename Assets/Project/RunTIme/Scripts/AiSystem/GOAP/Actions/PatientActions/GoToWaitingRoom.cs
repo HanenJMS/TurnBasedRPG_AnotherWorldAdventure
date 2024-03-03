@@ -23,12 +23,12 @@ namespace AnotherWorldProject.AISystem.GOAP.Core
             inventory.
                 GetItem("atLocation").gameObject.
                 GetComponent<GLocation>().
-                GetStates().
-                ModifyState(new("PatientWaiting", 1));
+                GetStateHandler().
+                ModifyState(new("JobWaiting", 1));
             inventory.
                 GetItem("atLocation").gameObject.
                 GetComponent<GLocation>().
-                GetInventory().AddItem("PatientWaiting", this.gameObject);
+                GetInventory().AddItem("JobWaiting", this.gameObject);
             return true;
         }
     }

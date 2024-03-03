@@ -13,7 +13,7 @@ namespace AnotherWorldProject.AISystem.GOAP
             {
                 location.GetInventory().AddItem(itemName, this.transform.gameObject);
                 if (worldState == "") return;
-                location.GetStates().ModifyState(new(worldState, 1));
+                location.GetStateHandler().ModifyState(new(worldState, 1));
             }
             else
             {
@@ -29,7 +29,7 @@ namespace AnotherWorldProject.AISystem.GOAP
             {
                 location.GetInventory().RemoveItem(itemName, this.transform.gameObject);
                 if (worldState == "") return;
-                location.GetStates().ModifyState(new(worldState, -1));
+                location.GetStateHandler().ModifyState(new(worldState, -1));
             }
             else
             {

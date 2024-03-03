@@ -8,7 +8,7 @@ namespace AnotherWorldProject.ActionSystem
     public class MoveAction : BaseAction
     {
         Vector3 targetPosition;
-        Queue<GridPosition> movingQueue = new();
+       
         NavMeshAgent agent;
         float speed = 0f;
         [SerializeField] int maxDistance = 2;
@@ -16,22 +16,11 @@ namespace AnotherWorldProject.ActionSystem
         {
             base.Awake();
             agent = GetComponent<NavMeshAgent>();
-            
-            targetPosition = this.transform.position;
         }
         private void Update()
         {
             UpdateAnimator();
-            if (movingQueue.Count > 0)
-            {
-                if (GetIsInDistance())
-                {
-                    this.targetPosition = LevelGridSystem.Instance.GetWorldPosition(movingQueue.Dequeue());
-                }
-
-                this.transform.LookAt(this.targetPosition);
-                agent.SetDestination(this.targetPosition);
-            }
+            if (!isActive) return;
             
             
         }
@@ -42,11 +31,11 @@ namespace AnotherWorldProject.ActionSystem
         }
         protected override void StartAnimation()
         {
-            animator.SetBool(ActionName, isActive);
+            //animator.SetBool(ActionName, isActive);
         }
         protected override void EndAnimation()
         {
-            animator.SetBool(ActionName, isActive);
+            //animator.SetBool(ActionName, isActive);
         }
         private void UpdateAnimator()
         {
@@ -79,7 +68,7 @@ namespace AnotherWorldProject.ActionSystem
                     GridPosition testingPosition = targetGridPosition + potentialPosition;
                     if (!LevelGridSystem.Instance.IsValidGridPosition(testingPosition)) continue;
                     if (targetGridPosition == testingPosition) continue;
-                    if (Pathfinding.Instance.GetNode(testingPosition).GetIsPathBlocked()) continue;
+                    //if (Pathfinding.Instance.GetNode(testingPosition).GetIsPathBlocked()) continue;
                     validGridPositionList.Add(testingPosition);
                 }
             }
@@ -88,20 +77,16 @@ namespace AnotherWorldProject.ActionSystem
         public override void ExecuteActionOnGridPosition(GridPosition targetPosition)
         {
             base.StartAction();
-            movingQueue.Clear();
-            movingQueue = new(Pathfinding.Instance.FindPath(LevelGridSystem.Instance.GetGridPosition(this.transform.position), targetPosition));
-
+            this.targetGridPosition = targetPosition;
+            agent.SetDestination(LevelGridSystem.Instance.GetWorldPosition(targetPosition));
         }
         public override void Cancel()
         {
             base.Cancel();
-            movingQueue.Clear();
         }
 
         public override void ExecuteActionOnUnit(Unit target)
         {
-            this.transform.LookAt(target.transform);
-            agent.SetDestination(target.transform.position);
             base.StartAction();
         }
         public bool IsMoving()

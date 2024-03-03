@@ -22,7 +22,7 @@ namespace AnotherWorldProject.AISystem.GOAP
         Dictionary<string, int> outConditions;
 
 
-
+        [SerializeField] GLocation targetLocation;
 
         protected GWorldStateHandler agentStates;
         protected GInventory inventory;
@@ -81,6 +81,10 @@ namespace AnotherWorldProject.AISystem.GOAP
         public GAgent GetTargetAgent(GameObject target)
         {
             return target.gameObject.GetComponent<GAgent>();
+        }
+        public GLocation GetTargetGLocation(GameObject target)
+        {
+            return target.gameObject.GetComponent<GLocation>();
         }
         public bool IsAchievable()
         {

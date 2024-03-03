@@ -41,9 +41,10 @@ namespace AnotherWorldProject.GridSystem
         }
         public void CreateDebugObject(Transform debugPrefab)
         {
-            foreach(KeyValuePair<GridPosition, TGridObject> gridPosition in grid)
+            GameObject parent = new("Grid");
+            foreach (KeyValuePair<GridPosition, TGridObject> gridPosition in grid)
             {
-                Transform debugobject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition.Key), Quaternion.identity);
+                Transform debugobject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition.Key), Quaternion.identity, parent.transform);
                 GridDebugObject gridDebugObject = debugobject.GetComponent<GridDebugObject>();
                 gridDebugObject.SetGridObject(gridPosition.Value);
             }

@@ -10,9 +10,8 @@ namespace AnotherWorldProject.AISystem.GOAP
     public class GAgent : MonoBehaviour
     {
         GInventory inventory = new();
-        
+
         GPlanner gPlanner;
-        Queue<GAction> plannedAction;
 
         GActionHandler actionHandler;
         GoalHandler goalHandler;
@@ -23,11 +22,26 @@ namespace AnotherWorldProject.AISystem.GOAP
             goalHandler = GetComponent<GoalHandler>();
         }
 
-        public GActionHandler GetActionHandler() => actionHandler;
-        public GoalHandler GetGoalHandler() => goalHandler;
-        public GWorldStateHandler GetStateHandler() => stateHandler;
-        public GInventory GetInventory() => inventory;
-        
+        public GActionHandler GetActionHandler()
+        {
+            return actionHandler;
+        }
+
+        public GoalHandler GetGoalHandler()
+        {
+            return goalHandler;
+        }
+
+        public GWorldStateHandler GetStateHandler()
+        {
+            return stateHandler;
+        }
+
+        public GInventory GetInventory()
+        {
+            return inventory;
+        }
+
         private void LateUpdate()
         {
             if (actionHandler.HasCurrentActionRunning())
@@ -38,23 +52,13 @@ namespace AnotherWorldProject.AISystem.GOAP
                 }
                 return;
             }
-            bool hasPlannedAction = plannedAction != null;
+            
             bool hasPlanner = gPlanner != null;
-            if (!hasPlannedAction || !hasPlanner)
-            {
-                gPlanner = new();
-                var sortedGoals = from goals in goalHandler.GetGoals() orderby goals.Value descending select goals;
-                foreach (KeyValuePair<Goal, int> sortedGoal in sortedGoals)
-                {
-                    plannedAction = gPlanner.FindPlan(actionHandler.GetActions(), sortedGoal.Key.goal, stateHandler);
-                    if (plannedAction != null)
-                    {
-                        goalHandler.SetCurrentGoal(sortedGoal.Key);
-                        break;
-                    }
-                }
-            }
-            if (plannedAction != null && plannedAction.Count == 0)
+            if (!hasPlanner) gPlanner = new(goalHandler, actionHandler, stateHandler);
+
+            gPlanner.TrySolveGoal();
+           
+            if (actionHandler.HasPlannedActionsFinished())
             {
 
                 // Check if currentGoal is removable
@@ -67,20 +71,10 @@ namespace AnotherWorldProject.AISystem.GOAP
                 gPlanner = null;
             }
 
-            if (plannedAction != null && plannedAction.Count > 0)
+            if (actionHandler.HasPlannedActionsNotFinished())
             {
-                actionHandler.SetCurrentAction(plannedAction.Dequeue());
-                if (actionHandler.GetCurrentAction().PreActionExecute())
-                {
-                    if (actionHandler.GetCurrentAction().HasTarget())
-                    {
-                        actionHandler.GetCurrentAction().ExecuteAction();
-                    }
-                }
-                else
-                {
-                    plannedAction = null;
-                }
+                actionHandler.StartNextPlannedAction();
+                actionHandler.HandleCurrentAction();
             }
         }
 

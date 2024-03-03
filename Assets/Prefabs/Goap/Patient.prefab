@@ -16,14 +16,12 @@ GameObject:
   - component: {fileID: 1738518696833161547}
   - component: {fileID: 6001189445357676676}
   - component: {fileID: 1553459225470520730}
-  - component: {fileID: 6118706189039373970}
   - component: {fileID: 1101575412505699765}
   - component: {fileID: 2773116695763041208}
   - component: {fileID: 7052504631139195846}
   - component: {fileID: 8258685362310572870}
   - component: {fileID: 7863238251000836342}
   - component: {fileID: 3411844179242744259}
-  - component: {fileID: 669759619432545856}
   - component: {fileID: 5410872014851645721}
   - component: {fileID: 1787825906685848089}
   - component: {fileID: 2991503313944978651}
@@ -50,7 +48,7 @@ Transform:
   - {fileID: 1160815977328386532}
   - {fileID: 6106480445486066431}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &1423476314124916251
 NavMeshAgent:
@@ -128,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentFaction:
-    factionName: Player
+    factionName: Enemy
 --- !u!114 &6001189445357676676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,29 +160,6 @@ MonoBehaviour:
   currentActionCooldown: 3.4028235e+38
   actionCost: 0
   maxDistance: 2
---- !u!114 &6118706189039373970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423476314124916249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9ed4bc1bfeb7294abd2995b6a801cda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActionName: ShootAction
-  maxActionCooldown: 0
-  currentActionCooldown: 3.4028235e+38
-  actionCost: 1
-  shootingRange: 2
-  damage: 1
-  Shoot: Shoot
-  StopShooting: StopShooting
-  bulletProjectile: {fileID: 4643915893979845941, guid: 9bf8202eec8bac04b974671e33095f84,
-    type: 3}
-  shootPointTransform: {fileID: 6334173889779782847}
 --- !u!114 &1101575412505699765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +222,7 @@ MonoBehaviour:
   result:
   - key: atHospital
     value: 1
+  targetLocation: {fileID: 0}
 --- !u!114 &7863238251000836342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +246,7 @@ MonoBehaviour:
   result:
   - key: hasRegistered
     value: 1
+  targetLocation: {fileID: 0}
 --- !u!114 &3411844179242744259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,29 +270,7 @@ MonoBehaviour:
   result:
   - key: isWaiting
     value: 1
---- !u!114 &669759619432545856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423476314124916249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a53962dfc9a6a14bab328e7fac039bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: 
-  actionCost: 1
-  target: {fileID: 0}
-  duration: 1
-  isRunning: 0
-  condition:
-  - key: GoToTreatmentRoom
-    value: 1
-  result:
-  - key: GettingTreated
-    value: 1
+  targetLocation: {fileID: 0}
 --- !u!114 &5410872014851645721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,6 +294,7 @@ MonoBehaviour:
   result:
   - key: goHome
     value: 1
+  targetLocation: {fileID: 0}
 --- !u!114 &1787825906685848089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1017,12 +973,6 @@ PrefabInstance:
 --- !u!4 &1428026940706502275 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4620998167008108, guid: c25ac4fdc903e7d49a7520930673ecd6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1423476313162720751}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6334173889779782847 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4910812271306862928, guid: c25ac4fdc903e7d49a7520930673ecd6,
     type: 3}
   m_PrefabInstance: {fileID: 1423476313162720751}
   m_PrefabAsset: {fileID: 0}

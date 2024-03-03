@@ -6,7 +6,23 @@ namespace AnotherWorldProject.AISystem.GOAP.GoalSystem
     {
         Goal currentGoal;
         Dictionary<Goal, int> goals = new();
-
+        GLocation goalLocation;
+        public void SetGoalLocation(GLocation location)
+        {
+            this.goalLocation = location;
+        }
+        public GLocation GetGoalLocation()
+        {
+            return goalLocation;
+        }
+        public Dictionary<string, int> GetGoalLocationStates()
+        {
+            if(goalLocation != null)
+            {
+                return goalLocation.GetStateHandler().GetStates();
+            }
+            return null;
+        }
         public void SetCurrentGoal(Goal goal)
         {
             currentGoal = goal;

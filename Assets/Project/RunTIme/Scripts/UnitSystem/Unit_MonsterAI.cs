@@ -8,11 +8,9 @@ namespace AnotherWorldProject.UnitSystem
         Unit aiUnit;
         Unit targetUnit;
         MoveAction movingAction;
-        ShootAction shootingAction;
-        AIHandler aiHandler;
+        RangedAction shootingAction;
 
 
-        AIStateMachine aiStateMachine;
         float patrolRadius = 10f;
 
 
@@ -21,8 +19,7 @@ namespace AnotherWorldProject.UnitSystem
         {
             aiUnit = GetComponent<Unit>();
             movingAction = GetComponent<MoveAction>();
-            shootingAction = GetComponent<ShootAction>();
-            aiHandler = GetComponent<AIHandler>();
+            shootingAction = GetComponent<RangedAction>();
         }
 
         private void Update()

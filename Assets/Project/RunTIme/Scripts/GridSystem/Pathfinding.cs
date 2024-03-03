@@ -41,10 +41,7 @@ namespace AnotherWorldProject.GridSystem
                 }
             }
         }
-        private void Update()
-        {
-            Testing();
-        }
+
         public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endPosition)
         {
             List<PathNode> openList = new();
@@ -168,26 +165,6 @@ namespace AnotherWorldProject.GridSystem
             return Move_Diagonal_Cost * Mathf.Min(xdistance, zdistance) + Move_Straight_Cost * remaining;
         }
 
-        void Testing()
-        {
-            if(Input.GetMouseButtonUp(0))
-            {
-                GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
-
-                GridPosition startPosition = new(0, 0);
-                if (!LevelGridSystem.Instance.IsValidGridPosition(mousePosition)) return;
-                List<GridPosition> path = FindPath(startPosition, mousePosition);
-
-                for(int i = 0; i<path.Count-1; i++)
-                {
-                    Debug.DrawLine(
-                        LevelGridSystem.Instance.GetWorldPosition(path[i]),
-                        LevelGridSystem.Instance.GetWorldPosition(path[i + 1]), 
-                        Color.green,
-                        10f);
-                }
-            }
-        }
     }
 }
 

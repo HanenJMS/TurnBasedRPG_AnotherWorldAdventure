@@ -99,10 +99,10 @@ namespace AnotherWorldProject.AISystem.GOAP.UI
         }
         private void UpdateGLocationStateText()
         {
-            GLocationStateText.text = "Gworld States" + "\n";
+            GLocationStateText.text = "Location States" + "\n";
             if (location != null)
             {
-                foreach (KeyValuePair<string, int> states in location.GetStates().GetStates())
+                foreach (KeyValuePair<string, int> states in location.GetStateHandler().GetStates())
                 {
                     GLocationStateText.text += states.Key + " " + states.Value + "\n";
                 }
@@ -110,7 +110,7 @@ namespace AnotherWorldProject.AISystem.GOAP.UI
         }
         void UpdateGLocationInventoryText()
         {
-            GLocationInventoryText.text = "Gworld Inventory state" + "\n";
+            GLocationInventoryText.text = "Location Inventory state" + "\n";
             if (location != null)
             {
                 foreach (KeyValuePair<string, List<GameObject>> states in location.GetInventory().GetInventory())

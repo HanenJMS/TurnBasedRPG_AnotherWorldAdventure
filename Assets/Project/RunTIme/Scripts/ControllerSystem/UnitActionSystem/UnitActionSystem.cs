@@ -45,25 +45,20 @@ namespace AnotherWorldProject.ControllerSystem
         {
             RaycastHit hit = MouseWorld.GetRaycastHit(unitLayerMask);
             if (hit.transform == null) return false;
-            if (hit.transform.TryGetComponent<Unit>(out Unit unit))
-            {
-                if (unit.GetFactionHandler().GetFactionName() != "Player") return false;
-                SetSelectedUnit(unit);
-                return true;
-            }
-            return false;
+            if (!hit.transform.TryGetComponent<Unit>(out Unit unit)) return false;
+            if (unit.GetFactionHandler().GetFactionName() != "Player") return false;
+            SetSelectedUnit(unit);
+            return true;
         }
         private bool TryHandleSelectedAction()
         {
-            //GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
-            //if (selectedAction == null) return false;
-            //if (!LevelGridSystem.Instance.IsValidGridPosition(mousePosition)) return false;
-            //if (!selectedAction.IsValidActionOnGridPosition(mousePosition)) return false;
-            //if (!selectedUnit.GetActionHandler().HasEnoughActionPoints(selectedAction)) return false;
-            //if (selectedAction.IsActionOnCooldown()) return false;
-            //selectedAction.ExecuteActionOnGridPosition(mousePosition);
-
-            selectedUnit.GetComponent<NavMeshAgent>().SetDestination(MouseWorld.GetMousePosition());
+            GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
+            if (selectedAction == null) return false;
+            if (!LevelGridSystem.Instance.IsValidGridPosition(mousePosition)) return false;
+            if (!selectedAction.IsValidActionOnGridPosition(mousePosition)) return false;
+            if (!selectedUnit.GetActionHandler().HasEnoughActionPoints(selectedAction)) return false;
+            if (selectedAction.IsActionOnCooldown()) return false;
+            selectedAction.ExecuteActionOnGridPosition(mousePosition);
             onActionExecuted?.Invoke();
             return true;
                 

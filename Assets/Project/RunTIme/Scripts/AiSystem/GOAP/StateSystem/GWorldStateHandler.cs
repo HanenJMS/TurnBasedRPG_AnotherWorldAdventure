@@ -5,7 +5,6 @@ namespace AnotherWorldProject.AISystem.GOAP.StateSystem
     public class GWorldStateHandler
     {
         Dictionary<string, int> states;
-
         public GWorldStateHandler()
         {
             states = new();

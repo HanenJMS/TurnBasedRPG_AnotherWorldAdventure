@@ -41,7 +41,7 @@ namespace AnotherWorldProject.AISystem.GOAP
             return cost;
         }
         public GAction GetAction() { return nodeAction; }
-        public Dictionary<string, int> GetPlanState()
+        public Dictionary<string, int> GetStates()
         {
             return states;
         }

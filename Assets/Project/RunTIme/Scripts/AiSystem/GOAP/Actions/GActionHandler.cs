@@ -1,4 +1,7 @@
+using AnotherWorldProject.ActionSystem;
+using AnotherWorldProject.FactionSystem;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 namespace AnotherWorldProject.AISystem.GOAP
 {
@@ -6,12 +9,46 @@ namespace AnotherWorldProject.AISystem.GOAP
     {
         [SerializeField] List<GAction> actions;
         GAction currentAction;
+        Queue<GAction> actionsPlanned;
         bool invoked = false;
         void Start()
         {
             actions = new List<GAction>(this.GetComponents<GAction>());
         }
-
+        public bool HasPlannedActionsNotFinished()
+        {
+            return GetPlannedActions() != null && GetPlannedActions().Count > 0; ;
+        }
+        public bool HasPlannedActionsFinished()
+        {
+            return GetPlannedActions() != null && GetPlannedActions().Count == 0;
+        }
+        public void HandleCurrentAction()
+        {
+            if (GetCurrentAction().PreActionExecute())
+            {
+                if (GetCurrentAction().HasTarget())
+                {
+                    GetCurrentAction().ExecuteAction();
+                }
+            }
+            else
+            {
+                SetPlannedActions(null);
+            }
+        }
+        public void StartNextPlannedAction()
+        {
+            currentAction = actionsPlanned.Dequeue();
+        }
+        public void SetPlannedActions(Queue<GAction> actionsPlanned)
+        {
+            this.actionsPlanned = actionsPlanned;
+        }
+        public Queue<GAction> GetPlannedActions()
+        {
+            return actionsPlanned;
+        }
 
         public GAction GetCurrentAction()
         {

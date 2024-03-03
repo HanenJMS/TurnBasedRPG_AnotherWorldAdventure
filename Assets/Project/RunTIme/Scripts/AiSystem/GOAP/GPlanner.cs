@@ -1,38 +1,74 @@
+
+using AnotherWorldProject.AISystem.GOAP.GoalSystem;
 using AnotherWorldProject.AISystem.GOAP.StateSystem;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
 namespace AnotherWorldProject.AISystem.GOAP
 {
 
     //plan node takes parent, float, dictionary, and action)
     public class GPlanner
     {
-        public Queue<GAction> FindPlan(List<GAction> actions, string goal, GWorldStateHandler agentStates)
+        Queue<GAction> actionsPlanned;
+        GoalHandler goalHandler;
+        GActionHandler actionHandler;
+        GWorldStateHandler stateHandler;
+        public GPlanner(GoalHandler goalHandler, GActionHandler actionHandler, GWorldStateHandler stateHandler)
         {
-            Queue<GAction> actionPlanSequence = new();
-            
-            Node planStart = new(null, 0, GWorld.Instance.GetGWorldWorldStates().GetStates(), null, agentStates.GetStates());
-            List<Node> planList = new();
-            List<GAction> usableActions = GetUsableActionList(actions);
+            this.goalHandler = goalHandler;
+            this.actionHandler = actionHandler;
+            this.stateHandler = stateHandler;
+        }
+        public void HandlePlan()
+        {
+            throw new NotImplementedException();
+        }
+        public void TrySolveGoal()
+        {
+            bool hasPlannedAction = actionHandler.GetPlannedActions() != null;
+            if (!hasPlannedAction)
+            {
+                var sortedGoals = from goals in goalHandler.GetGoals() orderby goals.Value descending select goals;
+                foreach (KeyValuePair<Goal, int> sortedGoal in sortedGoals)
+                {
+                    actionHandler.SetPlannedActions(FindPlan(actionHandler.GetActions(), goalHandler.GetGoalLocationStates(), sortedGoal.Key.goal, stateHandler));
+                    if (actionHandler.GetPlannedActions() != null)
+                    {
+                        goalHandler.SetCurrentGoal(sortedGoal.Key);
+                        break;
+                    }
+                }
+            }
+        }
+        public bool isActionPlannedActive()
+        {
+            return actionsPlanned != null;
+        }
+        public Queue<GAction> FindPlan(List<GAction> actions,Dictionary<string, int> WorldStates, string goal, GWorldStateHandler agentStates)
+        {
+            if(WorldStates == null)
+            {
+                WorldStates = GWorld.Instance.GetGWorldWorldStates().GetStates();
+            }
+            Node planStart = new(null, 0, WorldStates, null, agentStates.GetStates());
+            List<Node> potentialPlan = new();
+            List<GAction> potentialActions = GetPotentialActions(actions);
 
-            if (!IsPlanFound(planStart, planList, usableActions, goal))
+            if (!IsPlanFound(planStart, potentialPlan, potentialActions, goal))
             {
                 Debug.Log("No plan found");
                 return null;
             }
-            Node lowestCostPlan = GetLowestCostPlan(planList);
-            actionPlanSequence = GetActionSequence(lowestCostPlan);
-            Debug.Log("Plan: ");
-            foreach (GAction action in actionPlanSequence)
-            {
-                Debug.Log(action.name);
-            }
-            return actionPlanSequence;
+            Node lowestCostPlan = GetLowestCostPlan(potentialPlan);
+            actionsPlanned = GetActionsPlanned(lowestCostPlan);
+            return actionsPlanned;
         }
 
-        private Queue<GAction> GetActionSequence(Node lowestCostPlan)
+        private Queue<GAction> GetActionsPlanned(Node lowestCostPlan)
         {
-            Queue<GAction> actionPlanSequence = new();
+            Queue<GAction> actionPlanned = new();
             List<GAction> result = new();
             while (lowestCostPlan != null)
             {
@@ -44,48 +80,48 @@ namespace AnotherWorldProject.AISystem.GOAP
             }
             foreach (GAction action in result)
             {
-                actionPlanSequence.Enqueue(action);
+                actionPlanned.Enqueue(action);
             }
-            return actionPlanSequence;
+            return actionPlanned;
         }
 
-        bool IsPlanFound(Node parent, List<Node> plans, List<GAction> usableActions, string goal)
+        bool IsPlanFound(Node parent, List<Node> plans, List<GAction> potentialActions, string goal)
         {
             bool pathFound = false;
-            if (usableActions.Count == 0) return false;
-            foreach (GAction action in usableActions)
+            if (potentialActions.Count == 0) return false;
+            foreach (GAction action in potentialActions)
             {
-                if (!action.IsAchieveableGiven(parent.GetPlanState())) continue;
-                Dictionary<string, int> actionResultState = GetResultingConditions(parent, action);
+                if (!action.IsAchieveableGiven(parent.GetStates())) continue;
+                Dictionary<string, int> potentialWorldState = GetPotentialWorldState(parent, action);
 
-                Node node = new(parent, parent.GetCost() + action.GetActionCost(), actionResultState, action);
-                if (IsGoalAchieved(goal, actionResultState))
+                Node node = new(parent, parent.GetCost() + action.GetActionCost(), potentialWorldState, action);
+                if (IsGoalAchieved(goal, potentialWorldState))
                 {
                     plans.Add(node);
                     pathFound = true;
                 }
                 else
                 {
-                    List<GAction> actionSubsets = GetActionSubset(usableActions, action);
-                    if (IsPlanFound(node, plans, actionSubsets, goal)) pathFound = true;
+                    List<GAction> remainingActions = GetRemainingPotentialAction(potentialActions, action);
+                    if (IsPlanFound(node, plans, remainingActions, goal)) pathFound = true;
                 }
             }
             return pathFound;
         }
 
-        Dictionary<string, int> GetResultingConditions(Node parent, GAction action)
+        Dictionary<string, int> GetPotentialWorldState(Node parent, GAction action)
         {
-            Dictionary<string, int> currentPlanStates = new(parent.GetPlanState());
+            Dictionary<string, int> currentStateIntermediate = new(parent.GetStates());
             foreach (KeyValuePair<string, int> state in action.GetActionOutConditions())
             {
-                if (currentPlanStates.ContainsKey(state.Key)) continue;
-                currentPlanStates.Add(state.Key, state.Value);
+                if (currentStateIntermediate.ContainsKey(state.Key)) continue;
+                currentStateIntermediate.Add(state.Key, state.Value);
             }
 
-            return currentPlanStates;
+            return currentStateIntermediate;
         }
 
-        List<GAction> GetActionSubset(List<GAction> actions, GAction removingAction)
+        List<GAction> GetRemainingPotentialAction(List<GAction> actions, GAction removingAction)
         {
             List<GAction> actionsList = new(actions);
             if (actionsList.Contains(removingAction)) actionsList.Remove(removingAction);
@@ -111,7 +147,7 @@ namespace AnotherWorldProject.AISystem.GOAP
             }
             return lowest;
         }
-        List<GAction> GetUsableActionList(List<GAction> actions)
+        List<GAction> GetPotentialActions(List<GAction> actions)
         {
             List<GAction> usableActions = new();
             foreach (GAction action in actions)
@@ -123,6 +159,8 @@ namespace AnotherWorldProject.AISystem.GOAP
             }
             return usableActions;
         }
+
+
     }
 }
 

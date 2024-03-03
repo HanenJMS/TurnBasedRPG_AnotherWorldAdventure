@@ -16,13 +16,15 @@ GameObject:
   - component: {fileID: 1738518696833161547}
   - component: {fileID: 6001189445357676676}
   - component: {fileID: 1553459225470520730}
-  - component: {fileID: 6118706189039373970}
   - component: {fileID: 1101575412505699765}
   - component: {fileID: 2773116695763041208}
   - component: {fileID: 6908624552250104266}
-  - component: {fileID: 7707821388226032809}
   - component: {fileID: 7670852030595203906}
   - component: {fileID: 9219753517575172537}
+  - component: {fileID: 6632982599392764684}
+  - component: {fileID: 8796791886873212633}
+  - component: {fileID: 6232857740119189502}
+  - component: {fileID: 5898670813932850579}
   m_Layer: 7
   m_Name: Nurse
   m_TagString: Untagged
@@ -57,7 +59,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1423476314124916249}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.1
   m_Speed: 2.957
   m_Acceleration: 50
   avoidancePriority: 50
@@ -157,31 +159,7 @@ MonoBehaviour:
   maxActionCooldown: 0
   currentActionCooldown: 3.4028235e+38
   actionCost: 0
-  minDistance: 2
   maxDistance: 2
---- !u!114 &6118706189039373970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423476314124916249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9ed4bc1bfeb7294abd2995b6a801cda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActionName: ShootAction
-  maxActionCooldown: 0
-  currentActionCooldown: 3.4028235e+38
-  actionCost: 1
-  shootingRange: 2
-  damage: 1
-  Shoot: Shoot
-  StopShooting: StopShooting
-  bulletProjectile: {fileID: 4643915893979845941, guid: 9bf8202eec8bac04b974671e33095f84,
-    type: 3}
-  shootPointTransform: {fileID: 6334173889779782847}
 --- !u!114 &1101575412505699765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,32 +199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3790dc80ae98d394ea7f8a9b2822ca43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentActionList: []
---- !u!114 &7707821388226032809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423476314124916249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 897a6dbfb507a5849a5e5115adb79f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionName: 
-  actionCost: 1
-  target: {fileID: 0}
-  duration: 5
-  isRunning: 0
-  condition:
-  - key: PatientWaiting
-    value: 1
-  - key: TreatmentRoom
-    value: 1
-  result:
-  - key: treatPatient
-    value: 1
 --- !u!114 &7670852030595203906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,11 +217,12 @@ MonoBehaviour:
   duration: 20
   isRunning: 0
   condition:
-  - key: PatientWaitingForTreatment
+  - key: PatientWaiting
     value: 1
   result:
   - key: treatPatient
     value: 1
+  targetLocation: {fileID: 0}
 --- !u!114 &9219753517575172537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,6 +246,73 @@ MonoBehaviour:
   result:
   - key: rested
     value: 1
+  targetLocation: {fileID: 0}
+--- !u!114 &6632982599392764684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e497e05947a2e4794facc94e23a6fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions: []
+--- !u!114 &8796791886873212633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a970c7c60b1a2342979da44fa8d1ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6232857740119189502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eef5cf1e37301aa4f987f3d067fafe7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: 
+  actionCost: 1
+  target: {fileID: 0}
+  duration: 0
+  isRunning: 0
+  condition:
+  - key: goToWork
+    value: 1
+  result:
+  - key: atWork
+    value: 1
+  targetLocation: {fileID: 0}
+  workLocation: 
+--- !u!54 &5898670813932850579
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4222132778947988247
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,12 +966,6 @@ PrefabInstance:
 --- !u!4 &1428026940706502275 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4620998167008108, guid: c25ac4fdc903e7d49a7520930673ecd6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1423476313162720751}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6334173889779782847 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4910812271306862928, guid: c25ac4fdc903e7d49a7520930673ecd6,
     type: 3}
   m_PrefabInstance: {fileID: 1423476313162720751}
   m_PrefabAsset: {fileID: 0}
