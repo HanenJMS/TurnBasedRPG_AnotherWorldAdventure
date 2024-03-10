@@ -30,11 +30,11 @@ namespace AnotherWorldProject.GridSystem
         //Handling Unit
         public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
         {
-            gridSystem.GetGridObject(gridPosition).AddUnit(unit);
+            gridSystem.GetGridObject(gridPosition).AddObjectToGrid(unit);
         }
         public void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
         {
-            GetGridObject(gridPosition).RemoveUnit(unit);
+            GetGridObject(gridPosition).RemoveObjectFromGrid(unit);
         }
         public void ChangingUnitGridPosition(GridPosition from, GridPosition to, Unit unit)
         {
@@ -42,9 +42,9 @@ namespace AnotherWorldProject.GridSystem
             AddUnitAtGridPosition(to, unit);
             onUpdateGridPosition?.Invoke();
         }
-        public List<Unit> GetUnitsAtGridPosition(GridPosition gridPosition)
+        public List<object> GetObjectOnGridPosition(GridPosition gridPosition)
         {
-            return gridSystem.GetGridObject(gridPosition).GetUnitList();
+            return gridSystem.GetGridObject(gridPosition).GetObjectList();
         }
 
         //GridSystem Exposed

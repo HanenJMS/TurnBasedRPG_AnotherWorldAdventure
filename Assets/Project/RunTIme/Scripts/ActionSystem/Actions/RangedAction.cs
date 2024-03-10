@@ -54,10 +54,10 @@ namespace AnotherWorldProject.ActionSystem
                     GridPosition testingPosition = targetGridPosition + potentialPosition;
                     if (!LevelGridSystem.Instance.IsValidGridPosition(testingPosition)) continue;
                     if (targetGridPosition == testingPosition) continue;
-                    if (!LevelGridSystem.Instance.GetGridObject(testingPosition).Hasunits()) continue;
-                    if (LevelGridSystem.Instance.GetGridObject(testingPosition).GetUnitList()[0].GetFactionHandler().GetFactionName() == this.gameObject.GetComponent<Unit>().GetFactionHandler().GetFactionName()) continue;
-                    if (LevelGridSystem.Instance.GetGridObject(testingPosition).GetUnitList()[0].GetHealthHandler().IsDead()) continue;
-                    if (Vector3.Distance(LevelGridSystem.Instance.GetGridObject(testingPosition).GetUnitList()[0].transform.position, this.transform.position) > shootingRange * Mathf.Pow(LevelGridSystem.Instance.GetGridCellSize(), 2)) continue;
+                    if (!LevelGridSystem.Instance.GetGridObject(testingPosition).HasObjectOnGrid()) continue;
+                    if ((LevelGridSystem.Instance.GetGridObject(testingPosition).GetObjectList()[0] as Unit).GetFactionHandler().GetFactionName() == this.gameObject.GetComponent<Unit>().GetFactionHandler().GetFactionName()) continue;
+                    if ((LevelGridSystem.Instance.GetGridObject(testingPosition).GetObjectList()[0] as Unit).GetHealthHandler().IsDead()) continue;
+                    if (Vector3.Distance((LevelGridSystem.Instance.GetGridObject(testingPosition).GetObjectList()[0] as Unit).transform.position, this.transform.position) > shootingRange * Mathf.Pow(LevelGridSystem.Instance.GetGridCellSize(), 2)) continue;
                     validGridPositionList.Add(testingPosition);
                 }
             }
@@ -68,7 +68,7 @@ namespace AnotherWorldProject.ActionSystem
         //action logic
         public void Attack(GridPosition gridPosition)
         {
-            unitTarget = LevelGridSystem.Instance.GetGridObject(gridPosition).GetUnitList()[0];
+            unitTarget = LevelGridSystem.Instance.GetGridObject(gridPosition).GetObjectList()[0] as Unit;
             
             AttackUnit();
         }

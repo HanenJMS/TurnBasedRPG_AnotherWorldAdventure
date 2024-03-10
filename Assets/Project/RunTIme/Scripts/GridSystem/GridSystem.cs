@@ -37,7 +37,7 @@ namespace AnotherWorldProject.GridSystem
         public GridPosition GetGridPosition(Vector3 worldPosition)
         {
             return new GridPosition(Mathf.RoundToInt(worldPosition.x / cellSize),
-                 Mathf.RoundToInt(worldPosition.z / cellSize));
+                                    Mathf.RoundToInt(worldPosition.z / cellSize));
         }
         public void CreateDebugObject(Transform debugPrefab)
         {
@@ -55,7 +55,7 @@ namespace AnotherWorldProject.GridSystem
         }
         public bool isValidGridPosition(GridPosition gridPosition)
         {
-            return gridPosition.x >= 0 && gridPosition.z >= 0 && gridPosition.x < width && gridPosition.z < height;
+            return grid.ContainsKey(gridPosition);
         }
         public List<GridPosition> GetAllGridPositions()
         {

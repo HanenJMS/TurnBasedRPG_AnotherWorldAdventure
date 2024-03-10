@@ -38,6 +38,11 @@ namespace AnotherWorldProject.ControllerSystem
             Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask);
             return raycastHit;
         }
+
+        public static T GetInteractionType<T>(RaycastHit hit) where T : MonoBehaviour
+        {
+            return hit.transform.GetComponent<T>();
+        }
     }
 }
 

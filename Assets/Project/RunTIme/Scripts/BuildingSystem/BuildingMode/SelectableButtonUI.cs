@@ -1,13 +1,14 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace AnotherWorldProject.BuildingSystem
 {
-    public class BuildingButtonUI : MonoBehaviour
+    public class SelectableButtonUI : MonoBehaviour
     {
         Button button;
-        GameObject building;
+        GameObject selectableUI;
         [SerializeField]
         TextMeshProUGUI text;
         private void Awake()
@@ -18,16 +19,16 @@ namespace AnotherWorldProject.BuildingSystem
 
         private void Start()
         {
+            
+        }
+        public void SetSelectableUI(GameObject selectableUI, Action selectableUIAction)
+        {
+            this.selectableUI = selectableUI;
+            text.text = selectableUI.gameObject.name;
             button.onClick.AddListener(() =>
             {
-                BuildingSystem.Instance.SetSelectedBuilding(building);
-                BuildingSystem.Instance.ActivateSystem();
+                selectableUIAction();
             });
-        }
-        public void SetBuilding(GameObject building)
-        {
-            this.building = building;
-            text.text = building.gameObject.name;
         }
 
     }

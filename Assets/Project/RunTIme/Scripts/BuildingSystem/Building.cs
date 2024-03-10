@@ -1,22 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+using AnotherWorldProject.GridSystem;
 using UnityEngine;
 
 namespace AnotherWorldProject.BuildingSystem
 {
     public class Building : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        GridPosition currentPosition;
+        private void Start()
+        {
+            currentPosition = LevelGridSystem.Instance.GetGridPosition(this.transform.position);
+        }
+        public void Use()
         {
 
         }
-
-        // Update is called once per frame
-        void Update()
+        public void Demolish()
         {
-
+            GridObject gridObject = LevelGridSystem.Instance.GetGridObject(currentPosition);
+            gridObject.RemoveObjectFromGrid(this.gameObject);
+            gridObject.SetIsBlocked(false);
+            Destroy(this.gameObject);
         }
+
+
     }
 }
 

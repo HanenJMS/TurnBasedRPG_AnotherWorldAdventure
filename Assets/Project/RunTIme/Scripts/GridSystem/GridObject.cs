@@ -1,5 +1,6 @@
 using AnotherWorldProject.UnitSystem;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace AnotherWorldProject.GridSystem
 {
@@ -7,34 +8,55 @@ namespace AnotherWorldProject.GridSystem
     {
         GridSystem<GridObject> gridSystem;
         GridPosition gridPosition;
-        List<Unit> unitList;
+        List<object> objectList;
+        bool isBlocked;
         public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPosition)        {
             this.gridSystem = gridSystem;
             this.gridPosition = gridPosition;
-            unitList = new();
+            objectList = new();
+            isBlocked = false;
         }
-        public void AddUnit(Unit unit)
+        public void AddObjectToGrid(object gridObject)
         {
-            unitList.Add(unit);
+            objectList.Add(gridObject);
         }
-        public void RemoveUnit(Unit unit)
+        public void RemoveObjectFromGrid(object gridObject)
         {
-            unitList.Remove(unit);
+            objectList.Remove(gridObject);
         }
-        public bool Hasunits()
+        public bool HasObjectOnGrid()
         {
-            return unitList.Count > 0;  
+            return objectList.Count > 0;  
         }
-        public List<Unit> GetUnitList()
+        public bool GetIsBlocked()
         {
-            return unitList;
+            return isBlocked;
+        }
+        public void SetIsBlocked(bool isBlocked)
+        {
+            this.isBlocked = isBlocked;
+        }
+        public void SetObjectPriorityOnGrid(object newGridResident, int index)
+        {
+            if(objectList.Contains(newGridResident))
+            {
+                objectList.Remove(newGridResident);
+            }
+            objectList.Insert(index, newGridResident);
+        }
+        public List<object> GetObjectList()
+        {
+            return objectList;
         }
         public override string ToString()
         {
             string unitOnGrid = "";
-            foreach(Unit unit in unitList)
+            foreach(object unit in objectList)
             {
-                unitOnGrid += unit.name + "\n";
+                if(unit is Unit)
+                {
+                    unitOnGrid += (unit as Unit).gameObject.name + "\n";
+                }
             }
             return gridPosition.ToString() + $"\n{unitOnGrid}";
         }

@@ -68,6 +68,8 @@ namespace AnotherWorldProject.ActionSystem
                     GridPosition testingPosition = targetGridPosition + potentialPosition;
                     if (!LevelGridSystem.Instance.IsValidGridPosition(testingPosition)) continue;
                     if (targetGridPosition == testingPosition) continue;
+                    if (LevelGridSystem.Instance.GetGridObject(testingPosition).HasObjectOnGrid()) continue;
+                    if (LevelGridSystem.Instance.GetGridObject(testingPosition).GetIsBlocked()) continue;
                     //if (Pathfinding.Instance.GetNode(testingPosition).GetIsPathBlocked()) continue;
                     validGridPositionList.Add(testingPosition);
                 }
