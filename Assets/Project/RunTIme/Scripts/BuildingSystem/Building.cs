@@ -21,7 +21,10 @@ namespace AnotherWorldProject.BuildingSystem
             gridObject.SetIsBlocked(false);
             Destroy(this.gameObject);
         }
+        public void Upgrade()
+        {
 
+        }
 
     }
 }

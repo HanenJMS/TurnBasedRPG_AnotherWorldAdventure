@@ -29,7 +29,7 @@ namespace AnotherWorldProject.UI_System
             InteractionButtonContainer.position = Input.mousePosition;
             EnterButton();
             DemolishButton();
-
+            UpgradeButton();
         }
         void EnterButton()
         {
@@ -49,6 +49,17 @@ namespace AnotherWorldProject.UI_System
             interactionButton.SetInteractionButton("Demolish", () =>
             {
                 selectedBuilding.Demolish();
+                BuildingInteractionSystem.Instance.EndBuildingInteraction();
+            });
+            buttons.Add(interactionButton);
+        }
+        void UpgradeButton()
+        {
+            GameObject uButton = Instantiate(InteractionButtonUI, InteractionButtonContainer).gameObject;
+            InteractionButtonUI interactionButton = uButton.GetComponent<InteractionButtonUI>();
+            interactionButton.SetInteractionButton("Upgrade", () =>
+            {
+                selectedBuilding.Upgrade();
                 BuildingInteractionSystem.Instance.EndBuildingInteraction();
             });
             buttons.Add(interactionButton);
