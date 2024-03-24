@@ -61,7 +61,7 @@ namespace AnotherWorldProject.BuildingSystem
         /// <param name="blockGrid"></param>
         public void PlaceBuildingOnGrid(GridPosition gridPosition, bool blockGrid)
         {
-            if (!LevelGridSystem.Instance.IsValidGridPosition(gridPosition)) return;
+            if (!LevelGridSystem.Instance.GridPositionIsValid(gridPosition)) return;
             if (LevelGridSystem.Instance.GetGridObject(gridPosition).HasObjectOnGrid()) return;
             Vector3 buildingPosition = LevelGridSystem.Instance.GetWorldPosition(gridPosition);
             GameObject newBuilding = Instantiate(selectedBuildingConstruction, buildingPosition, Quaternion.identity, buildingContainerWorld);
@@ -74,7 +74,7 @@ namespace AnotherWorldProject.BuildingSystem
         {
             if (selectedBuildingConstruction == null) return false;
             GridPosition buildingGridPosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
-            if (!LevelGridSystem.Instance.IsValidGridPosition(buildingGridPosition)) return false;
+            if (!LevelGridSystem.Instance.GridPositionIsValid(buildingGridPosition)) return false;
             if (LevelGridSystem.Instance.GetGridObject(buildingGridPosition).HasObjectOnGrid())
             {
                 CancelBuildingMode();

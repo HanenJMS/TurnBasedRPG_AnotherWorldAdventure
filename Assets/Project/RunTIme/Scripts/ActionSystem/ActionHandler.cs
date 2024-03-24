@@ -1,4 +1,5 @@
 using AnotherWorldProject.ControllerSystem;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AnotherWorldProject.ActionSystem
@@ -6,6 +7,8 @@ namespace AnotherWorldProject.ActionSystem
     public class ActionHandler : MonoBehaviour
     {
         BaseAction currentAction;
+        BaseAction nextAction;
+        List<BaseAction> equippedActions = new();
         BaseAction[] actions;
         [SerializeField] int MaxActionPoints = 100;
         [SerializeField] int currentActionPoints;
@@ -27,6 +30,11 @@ namespace AnotherWorldProject.ActionSystem
         public BaseAction[] GetAllActions()
         {
             return actions;
+        }
+
+        public void EquipAction(BaseAction action, int index)
+        {
+            equippedActions[index] = action;
         }
         public T GetAction<T>() where T : BaseAction
         {

@@ -33,7 +33,7 @@ namespace AnotherWorldProject.ActionSystem
         {
             //animator.SetBool(ActionName, isActive);
         }
-        protected override void EndAnimation()
+        protected override void ResetAnimationTrigger()
         {
             //animator.SetBool(ActionName, isActive);
         }
@@ -66,7 +66,7 @@ namespace AnotherWorldProject.ActionSystem
                 {
                     GridPosition potentialPosition = new(x, z);
                     GridPosition testingPosition = targetGridPosition + potentialPosition;
-                    if (!LevelGridSystem.Instance.IsValidGridPosition(testingPosition)) continue;
+                    if (!LevelGridSystem.Instance.GridPositionIsValid(testingPosition)) continue;
                     if (targetGridPosition == testingPosition) continue;
                     if (LevelGridSystem.Instance.GetGridObject(testingPosition).HasObjectOnGrid()) continue;
                     if (LevelGridSystem.Instance.GetGridObject(testingPosition).GetIsBlocked()) continue;

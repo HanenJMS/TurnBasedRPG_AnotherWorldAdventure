@@ -34,7 +34,7 @@ namespace AnotherWorldProject.BuildingSystem
                 onEndInteraction?.Invoke();
                 Vector3 mousePosition = MouseWorld.GetMousePosition();
                 GridPosition gridPlacementPosition = LevelGridSystem.Instance.GetGridPosition(mousePosition);
-                if (!LevelGridSystem.Instance.IsValidGridPosition(gridPlacementPosition)) return;
+                if (!LevelGridSystem.Instance.GridPositionIsValid(gridPlacementPosition)) return;
                 
                 GridObject gridPositionObject = LevelGridSystem.Instance.GetGridObject(gridPlacementPosition);
 

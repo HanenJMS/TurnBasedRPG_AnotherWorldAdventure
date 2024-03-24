@@ -1,14 +1,13 @@
-using AnotherWorldProject.UnitSystem;
+using UnityEngine;
 
 namespace AnotherWorldProject.CombatSystem
 {
     [System.Serializable]
     public class DamageDefinition
     {
-        Unit Sender;
-        Unit Target;
-
-        int damageOnHit;
+        [SerializeField] int primaryDamage;
+        [SerializeField] int secondaryDamage;
+        [SerializeField] int tertiaryDamage;
     }
 }
 

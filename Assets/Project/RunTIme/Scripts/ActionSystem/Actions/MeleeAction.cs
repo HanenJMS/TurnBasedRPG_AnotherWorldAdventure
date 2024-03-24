@@ -18,13 +18,13 @@ namespace AnotherWorldProject.ActionSystem
 
         public override void ExecuteActionOnGridPosition(GridPosition gridPosition)
         {
-            if (IsActionOnCooldown()) return;
+            if (IsOnCooldown()) return;
             base.StartAction();
             Attack(gridPosition);
         }
         public override void ExecuteActionOnUnit(Unit unit)
         {
-            if (IsActionOnCooldown()) return;
+            if (IsOnCooldown()) return;
             
             base.StartAction();
             unitTarget = unit;
@@ -36,7 +36,7 @@ namespace AnotherWorldProject.ActionSystem
             animator.SetTrigger(Shoot);
             animator.ResetTrigger(StopShooting);
         }
-        protected override void EndAnimation()
+        protected override void ResetAnimationTrigger()
         {
             animator.ResetTrigger(Shoot);
             animator.SetTrigger(StopShooting);
@@ -52,7 +52,7 @@ namespace AnotherWorldProject.ActionSystem
                 {
                     GridPosition potentialPosition = new(x, z);
                     GridPosition testingPosition = targetGridPosition + potentialPosition;
-                    if (!LevelGridSystem.Instance.IsValidGridPosition(testingPosition)) continue;
+                    if (!LevelGridSystem.Instance.GridPositionIsValid(testingPosition)) continue;
                     if (targetGridPosition == testingPosition) continue;
                     if (!LevelGridSystem.Instance.GetGridObject(testingPosition).HasObjectOnGrid()) continue;
                     if ((LevelGridSystem.Instance.GetGridObject(testingPosition).GetObjectList()[0] as Unit).GetFactionHandler().GetFactionName() == this.gameObject.GetComponent<Unit>().GetFactionHandler().GetFactionName()) continue;
@@ -80,7 +80,7 @@ namespace AnotherWorldProject.ActionSystem
         }
 
         //animation triggers
-        protected override void AnimationStart()
+        protected override void AnimationTriggered()
         {
             
             Transform bulletTransform = Instantiate(bulletProjectile, shootPointTransform.position, Quaternion.identity);
@@ -88,10 +88,6 @@ namespace AnotherWorldProject.ActionSystem
             
             rangedProjectile.FireProjectile(unitTarget.transform.position, damage, this.gameObject.GetComponent<Unit>().GetFactionHandler().GetFactionName());
 
-        }
-        protected override void AnimationEnd()
-        {
-            EndAction();
         }
 
         //public override void Cancel()

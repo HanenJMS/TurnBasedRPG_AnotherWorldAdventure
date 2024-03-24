@@ -6,14 +6,12 @@ using UnityEngine;
 
 namespace AnotherWorldProject.ActionSystem
 {
-    public class RangedAction : BaseAction
+    public class GrenadeAction : BaseAction
     {
         [SerializeField] int shootingRange = 2;
         [SerializeField] int damage = 1;
-        [SerializeField] string Shoot = "Shoot";
-        [SerializeField] string StopShooting = "StopShooting";
         //[SerializeField] Unit targetUnit;
-        [SerializeField] Transform bulletProjectile;
+        [SerializeField] Transform grenadeProjectile;
         [SerializeField] Transform shootPointTransform;
 
         public override void ExecuteActionOnGridPosition(GridPosition gridPosition)
@@ -25,22 +23,17 @@ namespace AnotherWorldProject.ActionSystem
         public override void ExecuteActionOnUnit(Unit unit)
         {
             if (IsOnCooldown()) return;
-            
+
             base.StartAction();
             unitTarget = unit;
             AttackUnit();
         }
         protected override void StartAnimation()
         {
-           
-            animator.SetTrigger(Shoot);
-            animator.ResetTrigger(StopShooting);
-            base.StartAnimation();
+            //base.StartAnimation();
         }
         protected override void ResetAnimationTrigger()
         {
-            animator.ResetTrigger(Shoot);
-            animator.SetTrigger(StopShooting);
         }
         public override List<GridPosition> GetValidActionGridPositionList()
         {
@@ -56,11 +49,9 @@ namespace AnotherWorldProject.ActionSystem
                     if (!LevelGridSystem.Instance.GridPositionIsValid(testingPosition)) continue;
                     if (targetGridPosition == testingPosition) continue;
                     if (!LevelGridSystem.Instance.GetGridObject(testingPosition).HasObjectOnGrid()) continue;
-                    Unit targetUnit = LevelGridSystem.Instance.GetGridObject(testingPosition).GetObjectList()[0] as Unit;
-                    if (targetUnit == null) continue;
-                    if(targetUnit.GetFactionHandler().GetFactionName() == this.gameObject.GetComponent<Unit>().GetFactionHandler().GetFactionName()) continue;
-                    if (targetUnit.GetHealthHandler().IsDead()) continue;
-                    if (Vector3.Distance(targetUnit.transform.position, this.transform.position) > shootingRange * Mathf.Pow(LevelGridSystem.Instance.GetGridCellSize(), 2)) continue;
+                    if ((LevelGridSystem.Instance.GetGridObject(testingPosition).GetObjectList()[0] as Unit).GetFactionHandler().GetFactionName() == this.gameObject.GetComponent<Unit>().GetFactionHandler().GetFactionName()) continue;
+                    if ((LevelGridSystem.Instance.GetGridObject(testingPosition).GetObjectList()[0] as Unit).GetHealthHandler().IsDead()) continue;
+                    if (Vector3.Distance((LevelGridSystem.Instance.GetGridObject(testingPosition).GetObjectList()[0] as Unit).transform.position, this.transform.position) > shootingRange * Mathf.Pow(LevelGridSystem.Instance.GetGridCellSize(), 2)) continue;
                     validGridPositionList.Add(testingPosition);
                 }
             }
@@ -72,24 +63,25 @@ namespace AnotherWorldProject.ActionSystem
         public void Attack(GridPosition gridPosition)
         {
             unitTarget = LevelGridSystem.Instance.GetGridObject(gridPosition).GetObjectList()[0] as Unit;
-            
+
             AttackUnit();
+            Transform bulletTransform = Instantiate(grenadeProjectile, shootPointTransform.position, Quaternion.identity);
+            GrenadeProjectile rangedProjectile = bulletTransform.GetComponent<GrenadeProjectile>();
+            rangedProjectile.LaunchGrenade(unitTarget.transform.position, damage, this.gameObject.GetComponent<Unit>().GetFactionHandler().GetFactionName());
         }
         public void AttackUnit()
         {
             currentActionCooldown = 0f;
             transform.LookAt(this.unitTarget.transform);
             Debug.Log($"Animation Start: {currentActionCooldown <= maxActionCooldown}");
+
         }
 
         //animation triggers
         protected override void AnimationTriggered()
         {
-            
-            Transform bulletTransform = Instantiate(bulletProjectile, shootPointTransform.position, Quaternion.identity);
-            RangedProjectile rangedProjectile = bulletTransform.GetComponent<RangedProjectile>();
-            
-            rangedProjectile.FireProjectile(unitTarget.transform.position, damage, this.gameObject.GetComponent<Unit>().GetFactionHandler().GetFactionName());
+
+
 
         }
 

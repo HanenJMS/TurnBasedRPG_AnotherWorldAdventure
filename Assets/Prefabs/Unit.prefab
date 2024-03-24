@@ -17,8 +17,10 @@ GameObject:
   - component: {fileID: 6001189445357676676}
   - component: {fileID: 1101575412505699765}
   - component: {fileID: 2773116695763041208}
+  - component: {fileID: 668378988535667110}
   - component: {fileID: 2804623902149060856}
   - component: {fileID: 2025924852026427505}
+  - component: {fileID: 9063206855679625107}
   m_Layer: 7
   m_Name: Unit
   m_TagString: Untagged
@@ -164,6 +166,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af20eb485a73bf46b43b298b0df67a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &668378988535667110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9702882c1f1ba3c40bec57e102f9f099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2804623902149060856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,11 +211,32 @@ MonoBehaviour:
   maxActionCooldown: 1
   currentActionCooldown: 3.4028235e+38
   actionCost: 1
-  shootingRange: 2
+  shootingRange: 5
   damage: 1
   Shoot: Shoot
   StopShooting: StopShooting
   bulletProjectile: {fileID: 4643915893979845941, guid: 9bf8202eec8bac04b974671e33095f84,
+    type: 3}
+  shootPointTransform: {fileID: 6334173889779782847}
+--- !u!114 &9063206855679625107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423476314124916249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86547294a855eb41ac3e6ce1a78966d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: Grenade
+  maxActionCooldown: 0
+  currentActionCooldown: 3.4028235e+38
+  actionCost: 1
+  shootingRange: 6
+  damage: 1
+  grenadeProjectile: {fileID: 7846451996105355816, guid: b5d32bf5ec0768c4eb42f4774a1fb130,
     type: 3}
   shootPointTransform: {fileID: 6334173889779782847}
 --- !u!1 &4222132778947988247
@@ -240,7 +275,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1.92}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3261329569230041186
@@ -573,7 +608,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1.92}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4861979399948958052

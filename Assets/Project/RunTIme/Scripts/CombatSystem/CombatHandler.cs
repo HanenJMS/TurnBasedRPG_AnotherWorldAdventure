@@ -1,3 +1,4 @@
+using AnotherWorldProject.HealthSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,13 +7,17 @@ namespace AnotherWorldProject.CombatSystem
 {
     public class CombatHandler : MonoBehaviour
     {
-        public Action onDamageTaken;
-
-        Queue<DamageDefinition> damageTakenQueue = new();
-        void AddDamageDefinition(DamageDefinition damage)
+        HealthHandler healthHandler;
+        private void Awake()
         {
-            damageTakenQueue.Enqueue(damage);
+            healthHandler = GetComponent<HealthHandler>();
         }
+
+        void TakeDamage(DamageDefinition damage)
+        {
+            //healthHandler.RemoveFromCurrentHealth(damage);
+        }
+
     }
 }
 

@@ -1,11 +1,12 @@
 using AnotherWorldProject.GridSystem;
 using AnotherWorldProject.UnitSystem;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace AnotherWorldProject.ActionSystem
 {
-    public abstract class BaseAction : MonoBehaviour
+    public abstract class BaseAction : MonoBehaviour, IEquatable<BaseAction>
     {
         [SerializeField] protected string ActionName = "BaseAction";
 
@@ -25,17 +26,25 @@ namespace AnotherWorldProject.ActionSystem
         {
             actionHandler = GetComponent<ActionHandler>();
             animator = GetComponentInChildren<UnitAnimator>();
-            animator.SetBool(this.ActionName, false);
-            isTriggered = false;
         }
-        private void Update()
+        private void LateUpdate()
         {
             currentActionCooldown += Time.deltaTime;
+            if (currentActionCooldown > maxActionCooldown)
+            {
+                ResetAnimationTrigger();
+            }
+            
         }
+        public abstract void ExecuteActionOnGridPosition(GridPosition gridPosition);
+        public bool CanBePerformedOnGridPosition(GridPosition gridPosition)
+        {
+            return GetValidActionGridPositionList().Contains(gridPosition);
+        }
+        public abstract List<GridPosition> GetValidActionGridPositionList();
         private void OnEnable()
         {
-            animator.onAnimationStart += AnimationStart;
-            animator.onAnimationEnd += AnimationEnd;
+            animator.onAnimationStart += AnimationTriggered;
         }
 
         protected virtual void StartAction()
@@ -43,7 +52,7 @@ namespace AnotherWorldProject.ActionSystem
             isActive = true;
             currentActionCooldown = 0f;
             actionHandler.StartAction(this);
-            actionHandler.UseActionPoints(this);
+            
             StartAnimation();
         }
         protected virtual void EndAction()
@@ -58,20 +67,13 @@ namespace AnotherWorldProject.ActionSystem
         {
             isActive = false;
 
-            EndAnimation();
+            ResetAnimationTrigger();
         }
         
         //action executers
         public abstract void ExecuteActionOnUnit(Unit target);
-        public abstract void ExecuteActionOnGridPosition(GridPosition gridPosition);
 
-        //validation
-        public bool IsValidActionOnGridPosition(GridPosition gridPosition)
-        {
-            return GetValidActionGridPositionList().Contains(gridPosition);
-        }
-        public abstract List<GridPosition> GetValidActionGridPositionList();
-        public bool IsActionOnCooldown()
+        public bool IsOnCooldown()
         {
             return currentActionCooldown < maxActionCooldown;
         }
@@ -80,14 +82,12 @@ namespace AnotherWorldProject.ActionSystem
         //Animation
         protected virtual void StartAnimation()
         {
+            actionHandler.UseActionPoints(this);
         }
-        protected abstract void EndAnimation();
+        protected abstract void ResetAnimationTrigger();
         
         //animation action events
-        protected virtual void AnimationStart()
-        {
-        }
-        protected virtual void AnimationEnd()
+        protected virtual void AnimationTriggered()
         {
         }
 
@@ -99,6 +99,11 @@ namespace AnotherWorldProject.ActionSystem
         public virtual int GetActionCost()
         {
             return actionCost;
+        }
+
+        public bool Equals(BaseAction other)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -60,7 +60,7 @@ namespace AnotherWorldProject.GridSystem
         {
             return gridSystem.GetGridPosition(worldPosition);
         }
-        public bool IsValidGridPosition(GridPosition gridPosition)
+        public bool GridPositionIsValid(GridPosition gridPosition)
         {
             return gridSystem.isValidGridPosition(gridPosition);
         }

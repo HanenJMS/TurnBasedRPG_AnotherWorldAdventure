@@ -54,10 +54,10 @@ namespace AnotherWorldProject.ControllerSystem
         {
             GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
             if (selectedAction == null) return false;
-            if (!LevelGridSystem.Instance.IsValidGridPosition(mousePosition)) return false;
-            if (!selectedAction.IsValidActionOnGridPosition(mousePosition)) return false;
+            if (!LevelGridSystem.Instance.GridPositionIsValid(mousePosition)) return false;
+            if (!selectedAction.CanBePerformedOnGridPosition(mousePosition)) return false;
             if (!selectedUnit.GetActionHandler().HasEnoughActionPoints(selectedAction)) return false;
-            if (selectedAction.IsActionOnCooldown()) return false;
+            if (selectedAction.IsOnCooldown()) return false;
             selectedAction.ExecuteActionOnGridPosition(mousePosition);
             onActionExecuted?.Invoke();
             return true;
@@ -81,7 +81,7 @@ namespace AnotherWorldProject.ControllerSystem
         void SetSelectedUnit(Unit unit)
         {
             selectedUnit = unit;
-            selectedAction = unit.GetActionHandler().GetAllActions()[0];
+            selectedAction = selectedUnit.GetActionHandler().GetAction<MoveAction>();
             onSelectedUnit?.Invoke();
         }
     }

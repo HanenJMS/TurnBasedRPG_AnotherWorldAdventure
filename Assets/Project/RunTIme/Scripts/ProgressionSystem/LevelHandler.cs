@@ -1,18 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-public class LevelHandler : MonoBehaviour
+namespace AnotherWorldProject.ProgressionSystem
 {
-    // Start is called before the first frame update
-    void Start()
+    public class LevelHandler : MonoBehaviour
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        int level;
     }
 }
+
