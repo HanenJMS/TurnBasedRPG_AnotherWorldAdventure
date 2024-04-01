@@ -24,6 +24,9 @@ namespace AnotherWorldProject.GridSystem
             foreach (GridPosition gridPosition in LevelGridSystem.Instance.GetAllGridPositions())
             {
                 Transform gridVisualTransform = Instantiate(gridPositionVisual, LevelGridSystem.Instance.GetWorldPosition(gridPosition), Quaternion.identity, this.transform);
+
+                Vector3 newVisualScale = new(LevelGridSystem.Instance.GetGridCellSize(), 1, LevelGridSystem.Instance.GetGridCellSize());
+                gridVisualTransform.localScale = newVisualScale;
                 gridPositionVisualList.Add(gridPosition, gridVisualTransform.GetComponentInChildren<MeshRenderer>());
             }
             UnitActionSystem.Instance.onSelectedUnit += ShowSelectedUnitSelectedActionVisual;
@@ -41,7 +44,7 @@ namespace AnotherWorldProject.GridSystem
         void ShowSelectedUnitSelectedActionVisual()
         {
             if (UnitActionSystem.Instance.GetSelectedAction() == null) return;
-            ShowGridPositions(UnitActionSystem.Instance.GetSelectedAction().GetValidActionGridPositionList());
+            //ShowGridPositions(UnitActionSystem.Instance.GetSelectedAction().GetValidTargetInRange());
         }
         void ShowGridPositions(List<GridPosition> positions)
         {
@@ -50,7 +53,7 @@ namespace AnotherWorldProject.GridSystem
             {
                 if(gridPositionVisualList.ContainsKey(gridPosition))
                 {
-                    gridPositionVisualList[gridPosition].enabled = true;
+                    gridPositionVisualList[gridPosition].enabled = true;                
                 }
             }
         }

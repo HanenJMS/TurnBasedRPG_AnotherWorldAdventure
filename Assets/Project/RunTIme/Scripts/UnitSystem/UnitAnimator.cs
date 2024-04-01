@@ -9,6 +9,10 @@ namespace AnotherWorldProject.UnitSystem
         public Action onAnimationStart;
         public Action onAnimationEnd;
 
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
         public void SetFloat(string AnimationName,  float Value)
         {
             animator.SetFloat(AnimationName, Value);

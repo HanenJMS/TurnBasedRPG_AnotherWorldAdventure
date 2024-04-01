@@ -29,16 +29,21 @@ namespace AnotherWorldProject.ControllerSystem
         public static Vector3 GetMousePosition()
         {
             Ray ray = mainCameraReference.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit = GetRaycastHit(instance.mousePlaneLayer);
+            RaycastHit hit = GetRaycastHitLayered(instance.mousePlaneLayer);
             return hit.point;
         }
-        public static RaycastHit GetRaycastHit(LayerMask layerMask)
+        public static RaycastHit GetRaycastHitLayered(LayerMask layerMask)
         {
             Ray ray = mainCameraReference.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask);
             return raycastHit;
         }
-
+        public static RaycastHit GetRaycastHit()
+        {
+            Ray ray = mainCameraReference.ScreenPointToRay(Input.mousePosition);
+            Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue);
+            return raycastHit;
+        }
         public static T GetInteractionType<T>(RaycastHit hit) where T : MonoBehaviour
         {
             return hit.transform.GetComponent<T>();

@@ -1,6 +1,3 @@
-using AnotherWorldProject.GridSystem;
-using AnotherWorldProject.UnitSystem;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 namespace AnotherWorldProject.ActionSystem
@@ -8,7 +5,7 @@ namespace AnotherWorldProject.ActionSystem
     public class MoveAction : BaseAction
     {
         Vector3 targetPosition;
-       
+
         NavMeshAgent agent;
         float speed = 0f;
         [SerializeField] int maxDistance = 2;
@@ -22,12 +19,11 @@ namespace AnotherWorldProject.ActionSystem
             UpdateAnimator();
             if (!isActive) return;
             
-            
         }
         private void Start()
         {
-            targetGridPosition = LevelGridSystem.Instance.GetGridPosition(this.transform.position);
-            
+            targetPosition = this.transform.position;
+
         }
         protected override void StartAnimation()
         {
@@ -56,44 +52,25 @@ namespace AnotherWorldProject.ActionSystem
         {
             return maxDistance;
         }
-        public override List<GridPosition> GetValidActionGridPositionList()
-        {
-            List<GridPosition> validGridPositionList = new();
-            targetGridPosition = LevelGridSystem.Instance.GetGridPosition(this.transform.position);
-            for (int x = -maxDistance; x <= maxDistance; x++)
-            {
-                for (int z = -maxDistance; z <= maxDistance; z++)
-                {
-                    GridPosition potentialPosition = new(x, z);
-                    GridPosition testingPosition = targetGridPosition + potentialPosition;
-                    if (!LevelGridSystem.Instance.GridPositionIsValid(testingPosition)) continue;
-                    if (targetGridPosition == testingPosition) continue;
-                    if (LevelGridSystem.Instance.GetGridObject(testingPosition).HasObjectOnGrid()) continue;
-                    if (LevelGridSystem.Instance.GetGridObject(testingPosition).GetIsBlocked()) continue;
-                    //if (Pathfinding.Instance.GetNode(testingPosition).GetIsPathBlocked()) continue;
-                    validGridPositionList.Add(testingPosition);
-                }
-            }
-            return validGridPositionList;
-        }
-        public override void ExecuteActionOnGridPosition(GridPosition targetPosition)
-        {
-            base.StartAction();
-            this.targetGridPosition = targetPosition;
-            agent.SetDestination(LevelGridSystem.Instance.GetWorldPosition(targetPosition));
-        }
         public override void Cancel()
         {
             base.Cancel();
         }
 
-        public override void ExecuteActionOnUnit(Unit target)
+        public override void ExecuteAction()
         {
-            base.StartAction();
+            StartAction();
+            agent.SetDestination((Vector3)actionTarget);
         }
-        public bool IsMoving()
+
+        public override void SetTarget(object actionTarget)
         {
-            return Vector3.Distance(targetPosition, this.transform.position) >= agent.stoppingDistance;
+            this.actionTarget = actionTarget;
+        }
+
+        public override bool CanExecuteOnTarget(object actionTarget)
+        {
+            return actionTarget is Vector3;
         }
     }
 }

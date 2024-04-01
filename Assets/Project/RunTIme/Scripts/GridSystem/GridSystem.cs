@@ -46,6 +46,7 @@ namespace AnotherWorldProject.GridSystem
             {
                 Transform debugobject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition.Key), Quaternion.identity, parent.transform);
                 GridDebugObject gridDebugObject = debugobject.GetComponent<GridDebugObject>();
+                debugobject.localScale = new(cellSize/2, 1, cellSize/2);
                 gridDebugObject.SetGridObject(gridPosition.Value);
             }
         }

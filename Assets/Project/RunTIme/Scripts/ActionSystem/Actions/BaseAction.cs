@@ -19,8 +19,9 @@ namespace AnotherWorldProject.ActionSystem
 
         ActionHandler actionHandler;
         protected UnitAnimator animator;
-        protected Unit unitTarget;
-        protected GridPosition targetGridPosition;
+
+        protected object actionTarget;
+        protected Vector3 actionTargetWorldPosition;
         
         protected virtual void Awake()
         {
@@ -36,23 +37,15 @@ namespace AnotherWorldProject.ActionSystem
             }
             
         }
-        public abstract void ExecuteActionOnGridPosition(GridPosition gridPosition);
-        public bool CanBePerformedOnGridPosition(GridPosition gridPosition)
-        {
-            return GetValidActionGridPositionList().Contains(gridPosition);
-        }
-        public abstract List<GridPosition> GetValidActionGridPositionList();
-        private void OnEnable()
-        {
-            animator.onAnimationStart += AnimationTriggered;
-        }
+        public abstract void ExecuteAction();
+        public abstract bool CanExecuteOnTarget(object actionTarget);
+        public abstract void SetTarget(object actionTarget);
 
         protected virtual void StartAction()
         {
             isActive = true;
             currentActionCooldown = 0f;
             actionHandler.StartAction(this);
-            
             StartAnimation();
         }
         protected virtual void EndAction()
@@ -69,9 +62,6 @@ namespace AnotherWorldProject.ActionSystem
 
             ResetAnimationTrigger();
         }
-        
-        //action executers
-        public abstract void ExecuteActionOnUnit(Unit target);
 
         public bool IsOnCooldown()
         {

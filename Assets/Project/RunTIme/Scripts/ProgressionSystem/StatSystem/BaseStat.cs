@@ -6,7 +6,8 @@ namespace AnotherWorldProject.ProgressionSystem.StatSystem
     {
         [Range(1, 99)]
         [SerializeField] int level = 1;
-        [SerializeField] StatType statType;
+        [SerializeField] TalentType statType;
+        [SerializeField] ProgressionData ProgressionTable = null;
     }
 }
 

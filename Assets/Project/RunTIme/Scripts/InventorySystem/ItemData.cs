@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace AnotherWorldProject.InventorySystem
 {
@@ -11,6 +12,9 @@ namespace AnotherWorldProject.InventorySystem
         [SerializeField] string itemName;
         [TextArea]
         [SerializeField] string description;
+        [SerializeField] Image image;
+        [SerializeField] Sprite itemSprite;
+        [SerializeField] GameObject worldItemPrefab;
     }
 }
 

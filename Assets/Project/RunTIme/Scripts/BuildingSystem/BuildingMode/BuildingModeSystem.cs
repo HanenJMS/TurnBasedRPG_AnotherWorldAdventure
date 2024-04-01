@@ -1,8 +1,6 @@
 using AnotherWorldProject.ControllerSystem;
 using AnotherWorldProject.GridSystem;
-using PlasticPipe.PlasticProtocol.Messages;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -38,7 +36,7 @@ namespace AnotherWorldProject.BuildingSystem
         }
         private void Update()
         {
-            
+
             if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (HandleBuildingMode()) return;
@@ -81,9 +79,9 @@ namespace AnotherWorldProject.BuildingSystem
                 return false;
             }
             onConfirmPlacement?.Invoke(() => PlaceBuildingOnGrid(buildingGridPosition, true), Input.mousePosition);
-            
+
             return true;
-            
+
         }
 
         private void CancelBuildingMode()

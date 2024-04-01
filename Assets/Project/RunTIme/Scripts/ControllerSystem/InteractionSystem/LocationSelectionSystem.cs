@@ -31,7 +31,7 @@ namespace AnotherWorldProject.ControllerSystem
 
         private bool TryHandleLocationSelection()
         {
-            RaycastHit hit = MouseWorld.GetRaycastHit(LocationLayer);
+            RaycastHit hit = MouseWorld.GetRaycastHitLayered(LocationLayer);
             if (hit.transform == null) return false;
             if (hit.transform.TryGetComponent<GLocation>(out GLocation location))
             {

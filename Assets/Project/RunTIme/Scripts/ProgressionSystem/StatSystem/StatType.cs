@@ -1,13 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 namespace AnotherWorldProject.ProgressionSystem.StatSystem
 {
-    enum StatType
+    public enum StatType
     {
-        Melee,
-        Magic,
-        Craft
+        Health, Mana, Stamina, Damage, MagicDamage, PhysicalDefense, MagicDefense
     }
 }
 

@@ -10,4 +10,8 @@ public class BuildingPortraitUI : MonoBehaviour
     {
         portraitImage = GetComponentInChildren<SpriteRenderer>();
     }
+    private void LateUpdate()
+    {
+        this.transform.forward = (Camera.main.transform.forward);
+    }
 }

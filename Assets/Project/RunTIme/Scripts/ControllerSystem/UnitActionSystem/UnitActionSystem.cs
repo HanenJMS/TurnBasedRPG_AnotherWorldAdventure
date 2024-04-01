@@ -43,7 +43,7 @@ namespace AnotherWorldProject.ControllerSystem
         }
         bool TryHandleUnitSelection()
         {
-            RaycastHit hit = MouseWorld.GetRaycastHit(unitLayerMask);
+            RaycastHit hit = MouseWorld.GetRaycastHitLayered(unitLayerMask);
             if (hit.transform == null) return false;
             if (!hit.transform.TryGetComponent<Unit>(out Unit unit)) return false;
             if (unit.GetFactionHandler().GetFactionName() != "Player") return false;
@@ -52,13 +52,15 @@ namespace AnotherWorldProject.ControllerSystem
         }
         private bool TryHandleSelectedAction()
         {
-            GridPosition mousePosition = LevelGridSystem.Instance.GetGridPosition(MouseWorld.GetMousePosition());
+            object hit = MouseWorld.GetRaycastHit();
+            if (hit == null) hit = MouseWorld.GetMousePosition();
+            Debug.Log(hit.ToString());
             if (selectedAction == null) return false;
-            if (!LevelGridSystem.Instance.GridPositionIsValid(mousePosition)) return false;
-            if (!selectedAction.CanBePerformedOnGridPosition(mousePosition)) return false;
+            if (!selectedAction.CanExecuteOnTarget(hit)) return false;
             if (!selectedUnit.GetActionHandler().HasEnoughActionPoints(selectedAction)) return false;
             if (selectedAction.IsOnCooldown()) return false;
-            selectedAction.ExecuteActionOnGridPosition(mousePosition);
+            selectedAction.SetTarget(hit);
+            selectedAction.ExecuteAction();
             onActionExecuted?.Invoke();
             return true;
                 
